@@ -6,6 +6,18 @@
         
         <title>@yield('title', config('app.name', 'FeedTan Community Microfinance Group'))</title>
 
+        <meta name="description" content="@yield('description', 'FeedTan Community Microfinance Group - Transparent microfinance solutions for entrepreneurs and communities in Moshi, Kilimanjaro.')">
+
+        <!-- Google tag (gtag.js) -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-31S328VKTY"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'G-31S328VKTY');
+        </script>
+
         <link rel="icon" href="{{ url('/favicon.ico') }}">
 
         <link rel="preconnect" href="https://fonts.googleapis.com">
