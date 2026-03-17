@@ -24,9 +24,9 @@ class SavingsAccount extends Model
     protected $casts = [
         'balance' => 'decimal:2',
         'interest_rate' => 'decimal:2',
-        'opening_date' => 'date',
+        'opening_date' => 'datetime',
         'last_activity' => 'datetime',
-        'maturity_date' => 'date',
+        'maturity_date' => 'datetime',
     ];
 
     public function member()

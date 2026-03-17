@@ -4,12 +4,18 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Loan;
+use App\Models\SavingsAccount;
+use App\Models\Event;
+use App\Models\Payment;
+use App\Models\Transaction;
 
 class Member extends Model
 {
     use HasFactory;
 
     protected $fillable = [
+        'member_id',
         'name',
         'email',
         'phone',
@@ -17,11 +23,10 @@ class Member extends Model
         'member_type',
         'status',
         'registration_date',
-        'member_id'
     ];
 
     protected $casts = [
-        'registration_date' => 'date',
+        'registration_date' => 'datetime',
     ];
 
     public function loans()

@@ -28,10 +28,10 @@ class Loan extends Model
     protected $casts = [
         'amount' => 'decimal:2',
         'interest_rate' => 'decimal:2',
-        'application_date' => 'date',
-        'approval_date' => 'date',
-        'disbursement_date' => 'date',
-        'due_date' => 'date',
+        'application_date' => 'datetime',
+        'approval_date' => 'datetime',
+        'disbursement_date' => 'datetime',
+        'due_date' => 'datetime',
     ];
 
     public function member()
