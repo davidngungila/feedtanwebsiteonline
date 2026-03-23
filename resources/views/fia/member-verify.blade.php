@@ -45,7 +45,7 @@
                         <label for="member_id" class="sr-only">Member ID</label>
                         <input id="member_id" name="member_id" type="text" required 
                                class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-green-500 focus:border-green-500 focus:z-10 sm:text-sm" 
-                               placeholder="Enter your Member ID (e.g., PRM2, FND1, ORD7)" 
+                               placeholder="Enter your Member ID (e.g., PRMH3, FNDH2, ORDH4)" 
                                value="{{ old('member_id') }}">
                     </div>
                 </div>
