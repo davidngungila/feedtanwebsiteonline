@@ -79,6 +79,14 @@ class FiaPaymentController extends Controller
     // Submit payment verification
     public function submitPayment(Request $request)
     {
+        // Log the incoming request for debugging
+        \Log::info('Payment submission request:', [
+            'headers' => $request->headers->all(),
+            'expects_json' => $request->expectsJson(),
+            'is_ajax' => $request->ajax(),
+            'input' => $request->all()
+        ]);
+
         $request->validate([
             'member_id' => 'required|string',
             'member_name' => 'required|string',
@@ -126,8 +134,15 @@ class FiaPaymentController extends Controller
                 ]
             );
 
-            // Check if request expects JSON (AJAX)
-            if ($request->expectsJson()) {
+            \Log::info('Payment submission successful:', [
+                'confirmation_id' => $confirmation->id,
+                'member_id' => $request->member_id
+            ]);
+
+            // Check if request expects JSON (AJAX) - use multiple methods
+            $isAjax = $request->ajax() || $request->expectsJson() || $request->header('X-Requested-With') === 'XMLHttpRequest';
+            
+            if ($isAjax) {
                 return response()->json([
                     'success' => true,
                     'message' => 'Payment verification submitted successfully!',
@@ -139,11 +154,19 @@ class FiaPaymentController extends Controller
                 ->with('success', 'Your payment verification has been submitted successfully!');
                 
         } catch (\Exception $e) {
+            \Log::error('Payment submission error:', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
+                'input' => $request->all()
+            ]);
+
             // Check if request expects JSON (AJAX)
-            if ($request->expectsJson()) {
+            $isAjax = $request->ajax() || $request->expectsJson() || $request->header('X-Requested-With') === 'XMLHttpRequest';
+            
+            if ($isAjax) {
                 return response()->json([
                     'success' => false,
-                    'message' => 'An error occurred while submitting your payment verification. Please try again.'
+                    'message' => 'An error occurred while submitting your payment verification: ' . $e->getMessage()
                 ], 500);
             }
 

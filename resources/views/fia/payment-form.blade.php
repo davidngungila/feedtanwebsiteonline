@@ -373,11 +373,20 @@
                 method: 'POST',
                 body: formData,
                 headers: {
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                    'Accept': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest'
                 }
             })
-            .then(response => response.json())
+            .then(response => {
+                console.log('Response status:', response.status);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
             .then(data => {
+                console.log('Response data:', data);
                 // Hide loading splash
                 document.getElementById('loadingSplash').classList.add('hidden');
                 
@@ -387,14 +396,15 @@
                     // Store confirmation ID for view button
                     window.confirmationId = data.confirmation_id;
                 } else {
-                    // Show error
+                    // Show error with specific message
                     alert('Error: ' + (data.message || 'Something went wrong'));
                     document.getElementById('loadingSplash').classList.add('hidden');
                 }
             })
             .catch(error => {
-                console.error('Error:', error);
-                alert('An error occurred. Please try again.');
+                console.error('Fetch error:', error);
+                console.error('Error details:', error.message);
+                alert('An error occurred: ' + error.message + '. Please try again.');
                 document.getElementById('loadingSplash').classList.add('hidden');
             });
         }
