@@ -83,60 +83,72 @@ class FiaPaymentController extends Controller
             'member_id' => 'required|string',
             'member_name' => 'required|string',
             'member_type' => 'required|string',
-            'member_email' => 'nullable|email',
-            'amount_to_pay' => 'nullable|numeric|min:0',
-            'gawio_la_fia' => 'nullable|numeric|min:0',
-            'fia_iliyokomaa' => 'nullable|numeric|min:0',
-            'jumla' => 'nullable|numeric|min:0',
-            'malipo_vya_vipande' => 'nullable|numeric|min:0',
-            'loan' => 'nullable|string',
-            'kiasi_baki' => 'nullable|numeric|min:0',
+            'member_email' => 'required|email',
             'payment_method' => 'required|in:akiba,impe,cash_mobile,cash_bank',
-            'impe_years' => 'required_if:payment_method,impe|in:4,6',
-            'mobile_number' => 'required_if:payment_method,cash_mobile|string',
-            'mobile_account_name' => 'required_if:payment_method,cash_mobile|string',
-            'bank_name' => 'nullable|string',
+            'impe_years' => 'nullable|integer|in:4,6',
+            'mobile_number' => 'nullable|string',
+            'mobile_account_name' => 'nullable|string',
             'notes' => 'nullable|string'
         ]);
 
-        // Get existing payment record if any
-        $existingPaymentRecord = FiaPaymentRecord::where('member_id', $request->member_id)->first();
+        try {
+            // Create or update payment confirmation
+            $confirmation = FiaPaymentConfirmation::updateOrCreate(
+                ['member_id' => $request->member_id],
+                [
+                    'member_name' => $request->member_name,
+                    'member_type' => $request->member_type,
+                    'member_email' => $request->member_email,
+                    'payment_method' => $request->payment_method,
+                    'impe_years' => $request->impe_years,
+                    'mobile_number' => $request->mobile_number,
+                    'mobile_account_name' => $request->mobile_account_name,
+                    'status' => 'pending',
+                    'notes' => $request->notes
+                ]
+            );
 
-        // Create or update confirmation
-        $confirmation = FiaPaymentConfirmation::updateOrCreate(
-            ['member_id' => $request->member_id],
-            [
-                'member_name' => $request->member_name,
-                'member_type' => $request->member_type,
-                'member_email' => $request->member_email,
-                'amount_to_pay' => $existingPaymentRecord ? $existingPaymentRecord->jumla : 0,
-                'payment_method' => $request->payment_method,
-                'impe_years' => $request->impe_years,
-                'mobile_number' => $request->mobile_number,
-                'mobile_account_name' => $request->mobile_account_name,
-                'bank_name' => $request->bank_name,
-                'notes' => $request->notes,
-                'status' => 'pending'
-            ]
-        );
+            // Get existing payment record or create new one
+            $existingPaymentRecord = FiaPaymentRecord::where('member_id', $request->member_id)->first();
+            
+            // Create or update payment record with existing data
+            $paymentRecord = FiaPaymentRecord::updateOrCreate(
+                ['member_id' => $request->member_id],
+                [
+                    'gawio_la_fia' => $existingPaymentRecord ? $existingPaymentRecord->gawio_la_fia : 0,
+                    'fia_iliyokomaa' => $existingPaymentRecord ? $existingPaymentRecord->fia_iliyokomaa : 0,
+                    'jumla' => $existingPaymentRecord ? $existingPaymentRecord->jumla : 0,
+                    'malipo_vya_vipande' => $existingPaymentRecord ? $existingPaymentRecord->malipo_vya_vipande : 0,
+                    'loan' => $existingPaymentRecord ? $existingPaymentRecord->loan : 0,
+                    'kiasi_baki' => $existingPaymentRecord ? $existingPaymentRecord->kiasi_baki : 0,
+                    'status' => 'pending',
+                    'notes' => $request->notes
+                ]
+            );
 
-        // Create or update payment record (use existing data)
-        $paymentRecord = FiaPaymentRecord::updateOrCreate(
-            ['member_id' => $request->member_id],
-            [
-                'gawio_la_fia' => $existingPaymentRecord ? $existingPaymentRecord->gawio_la_fia : 0,
-                'fia_iliyokomaa' => $existingPaymentRecord ? $existingPaymentRecord->fia_iliyokomaa : 0,
-                'jumla' => $existingPaymentRecord ? $existingPaymentRecord->jumla : 0,
-                'malipo_vya_vipande' => $existingPaymentRecord ? $existingPaymentRecord->malipo_vya_vipande : 0,
-                'loan' => $existingPaymentRecord ? $existingPaymentRecord->loan : 0,
-                'kiasi_baki' => $existingPaymentRecord ? $existingPaymentRecord->kiasi_baki : 0,
-                'status' => 'pending',
-                'notes' => $request->notes
-            ]
-        );
+            // Check if request expects JSON (AJAX)
+            if ($request->expectsJson()) {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Payment verification submitted successfully!',
+                    'confirmation_id' => $confirmation->id
+                ]);
+            }
 
-        return redirect()->route('fia.confirmation', $confirmation->id)
-            ->with('success', 'Your payment verification has been submitted successfully!');
+            return redirect()->route('fia.confirmation', $confirmation->id)
+                ->with('success', 'Your payment verification has been submitted successfully!');
+                
+        } catch (\Exception $e) {
+            // Check if request expects JSON (AJAX)
+            if ($request->expectsJson()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'An error occurred while submitting your payment verification. Please try again.'
+                ], 500);
+            }
+
+            return back()->with('error', 'An error occurred while submitting your payment verification. Please try again.');
+        }
     }
 
     // Edit payment record (admin only)

@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FIA Payment Form - {{ $member['name'] }}</title>
+    <title>Payment Verification - {{ $member['name'] }}</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
 <body class="bg-gray-50 min-h-screen">
     <div class="min-h-screen py-8">
@@ -232,7 +233,62 @@
         </div>
     </div>
 
-    <script>
+    <!-- Loading Splash Screen -->
+<div id="loadingSplash" class="fixed inset-0 bg-gray-900 bg-opacity-75 z-50 hidden">
+    <div class="flex items-center justify-center min-h-screen">
+        <div class="bg-white rounded-lg p-8 max-w-md w-full mx-4">
+            <div class="text-center">
+                <div class="mb-4">
+                    <div class="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-green-600"></div>
+                </div>
+                <h3 class="text-lg font-medium text-gray-900 mb-2">Submitting Payment Verification</h3>
+                <p class="text-sm text-gray-600 mb-4">Please wait while we process your submission...</p>
+                
+                <!-- Progress Bar -->
+                <div class="w-full bg-gray-200 rounded-full h-2 mb-2">
+                    <div id="progressBar" class="bg-green-600 h-2 rounded-full transition-all duration-300" style="width: 0%"></div>
+                </div>
+                <div id="progressText" class="text-sm font-medium text-gray-700">0%</div>
+                
+                <!-- Status Messages -->
+                <div id="statusMessage" class="mt-4 text-sm text-gray-600">
+                    <div id="validating" class="hidden">✓ Validating information...</div>
+                    <div id="processing" class="hidden">✓ Processing payment details...</div>
+                    <div id="saving" class="hidden">✓ Saving to database...</div>
+                    <div id="finalizing" class="hidden">✓ Finalizing submission...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Success Modal -->
+<div id="successModal" class="fixed inset-0 bg-gray-900 bg-opacity-75 z-50 hidden">
+    <div class="flex items-center justify-center min-h-screen">
+        <div class="bg-white rounded-lg p-8 max-w-md w-full mx-4 text-center">
+            <div class="mb-4">
+                <div class="inline-flex items-center justify-center w-16 h-16 bg-green-100 rounded-full">
+                    <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                </div>
+            </div>
+            <h3 class="text-xl font-medium text-gray-900 mb-2">Payment Submitted Successfully!</h3>
+            <p class="text-sm text-gray-600 mb-6">Your payment verification has been submitted successfully. You will receive a confirmation email shortly.</p>
+            
+            <div class="space-y-3">
+                <button onclick="viewConfirmation()" class="w-full bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded-md transition duration-200">
+                    View Confirmation
+                </button>
+                <button onclick="newSubmission()" class="w-full bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-2 px-4 rounded-md transition duration-200">
+                    Submit Another Payment
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
         // Handle payment method selection
         document.querySelectorAll('input[name="payment_method"]').forEach(radio => {
             radio.addEventListener('change', function() {
@@ -259,6 +315,99 @@
                 }
             });
         });
+
+        // Handle form submission with loading splash
+        document.querySelector('form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Show loading splash
+            document.getElementById('loadingSplash').classList.remove('hidden');
+            
+            // Start progress animation
+            let progress = 0;
+            const progressBar = document.getElementById('progressBar');
+            const progressText = document.getElementById('progressText');
+            
+            // Status messages
+            const statusSteps = ['validating', 'processing', 'saving', 'finalizing'];
+            let currentStep = 0;
+            
+            const progressInterval = setInterval(() => {
+                progress += Math.random() * 15 + 5; // Random increment between 5-20
+                
+                if (progress >= 100) {
+                    progress = 100;
+                    clearInterval(progressInterval);
+                    
+                    // Complete the submission
+                    setTimeout(() => {
+                        submitForm();
+                    }, 500);
+                }
+                
+                progressBar.style.width = progress + '%';
+                progressText.textContent = Math.round(progress) + '%';
+                
+                // Show status messages based on progress
+                if (progress >= 25 && currentStep === 0) {
+                    document.getElementById('validating').classList.remove('hidden');
+                    currentStep++;
+                } else if (progress >= 50 && currentStep === 1) {
+                    document.getElementById('processing').classList.remove('hidden');
+                    currentStep++;
+                } else if (progress >= 75 && currentStep === 2) {
+                    document.getElementById('saving').classList.remove('hidden');
+                    currentStep++;
+                } else if (progress >= 95 && currentStep === 3) {
+                    document.getElementById('finalizing').classList.remove('hidden');
+                    currentStep++;
+                }
+            }, 200);
+        });
+        
+        function submitForm() {
+            const form = document.querySelector('form');
+            const formData = new FormData(form);
+            
+            fetch(form.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Hide loading splash
+                document.getElementById('loadingSplash').classList.add('hidden');
+                
+                if (data.success) {
+                    // Show success modal
+                    document.getElementById('successModal').classList.remove('hidden');
+                    // Store confirmation ID for view button
+                    window.confirmationId = data.confirmation_id;
+                } else {
+                    // Show error
+                    alert('Error: ' + (data.message || 'Something went wrong'));
+                    document.getElementById('loadingSplash').classList.add('hidden');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred. Please try again.');
+                document.getElementById('loadingSplash').classList.add('hidden');
+            });
+        }
+        
+        function viewConfirmation() {
+            if (window.confirmationId) {
+                window.location.href = '/fia/confirmation/' + window.confirmationId;
+            }
+        }
+        
+        function newSubmission() {
+            window.location.href = '/fia/verify';
+        }
     </script>
 </body>
 </html>
