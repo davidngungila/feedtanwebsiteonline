@@ -150,19 +150,42 @@
                                     </div>
                                 </div>
 
-                                <div class="sm:col-span-1">
-                                    <label class="block text-sm font-medium text-gray-700">
-                                        Payment Method for Kiasi Baki
-                                    </label>
-                                    <div class="mt-1">
-                                        <select id="payment_method" name="payment_method" required
-                                                class="shadow-sm focus:ring-green-500 focus:border-green-500 block w-full sm:text-sm border-gray-300 rounded-md">
-                                            <option value="">Select payment method</option>
-                                            <option value="akiba">Naweka Akiba</option>
-                                            <option value="impe">Nawekeza tena IMPE</option>
-                                            <option value="cash_mobile">CASH - Kwa Simu (Halopes/Mix By Yas)</option>
-                                            <option value="cash_bank">CASH - Bank</option>
-                                        </select>
+                                <div class="sm:col-span-2">
+                                    <h4 class="text-lg font-medium text-gray-900 mb-4">Payment Method for Balance (Kiasi Baki: {{ number_format($paymentRecord->kiasi_baki ?? 0, 2) }} TZS)</h4>
+                                    <p class="text-sm text-gray-600 mb-4">Select how you would like to handle your remaining balance:</p>
+                                    
+                                    <div class="space-y-3">
+                                        <label class="flex items-center p-3 border rounded-lg cursor-pointer hover:bg-gray-50 @if(old('payment_method') == 'akiba') bg-blue-50 border-blue-500 @endif">
+                                            <input type="radio" name="payment_method" value="akiba" class="mr-3" @if(old('payment_method') == 'akiba') checked @endif required>
+                                            <div>
+                                                <span class="font-medium">Naweka Akiba</span>
+                                                <p class="text-sm text-gray-500">Keep as savings</p>
+                                            </div>
+                                        </label>
+                                        
+                                        <label class="flex items-center p-3 border rounded-lg cursor-pointer hover:bg-gray-50 @if(old('payment_method') == 'impe') bg-purple-50 border-purple-500 @endif">
+                                            <input type="radio" name="payment_method" value="impe" class="mr-3" @if(old('payment_method') == 'impe') checked @endif required>
+                                            <div>
+                                                <span class="font-medium">Nawekeza tena IMPE</span>
+                                                <p class="text-sm text-gray-500">Reinvest in IMPE</p>
+                                            </div>
+                                        </label>
+                                        
+                                        <label class="flex items-center p-3 border rounded-lg cursor-pointer hover:bg-gray-50 @if(old('payment_method') == 'cash_mobile') bg-green-50 border-green-500 @endif">
+                                            <input type="radio" name="payment_method" value="cash_mobile" class="mr-3" @if(old('payment_method') == 'cash_mobile') checked @endif required>
+                                            <div>
+                                                <span class="font-medium">CASH - Kwa Simu (Halopes/Mix By Yas)</span>
+                                                <p class="text-sm text-gray-500">Receive via mobile money</p>
+                                            </div>
+                                        </label>
+                                        
+                                        <label class="flex items-center p-3 border rounded-lg cursor-pointer hover:bg-gray-50 @if(old('payment_method') == 'cash_bank') bg-yellow-50 border-yellow-500 @endif">
+                                            <input type="radio" name="payment_method" value="cash_bank" class="mr-3" @if(old('payment_method') == 'cash_bank') checked @endif required>
+                                            <div>
+                                                <span class="font-medium">CASH - Bank</span>
+                                                <p class="text-sm text-gray-500">Receive via bank transfer</p>
+                                            </div>
+                                        </label>
                                     </div>
                                 </div>
 
@@ -187,7 +210,7 @@
                                     <div class="mt-1">
                                         <input type="tel" id="mobile_number" name="mobile_number"
                                                class="shadow-sm focus:ring-green-500 focus:border-green-500 block w-full sm:text-sm border-gray-300 rounded-md"
-                                               placeholder="Enter mobile number">
+                                               placeholder="Enter mobile number" value="{{ old('mobile_number') }}">
                                     </div>
                                 </div>
 
@@ -198,7 +221,7 @@
                                     <div class="mt-1">
                                         <input type="text" id="mobile_account_name" name="mobile_account_name"
                                                class="shadow-sm focus:ring-green-500 focus:border-green-500 block w-full sm:text-sm border-gray-300 rounded-md"
-                                               placeholder="Enter account name">
+                                               placeholder="Enter account name" value="{{ old('mobile_account_name') }}">
                                     </div>
                                 </div>
 
@@ -231,28 +254,30 @@
 
     <script>
         // Handle payment method selection
-        document.getElementById('payment_method').addEventListener('change', function() {
-            const method = this.value;
-            
-            // Hide all conditional fields
-            document.getElementById('impe_years_div').style.display = 'none';
-            document.getElementById('mobile_details_div').style.display = 'none';
-            document.getElementById('mobile_name_div').style.display = 'none';
-            
-            // Show relevant fields based on selection
-            switch(method) {
-                case 'impe':
-                    document.getElementById('impe_years_div').style.display = 'block';
-                    break;
-                case 'cash_mobile':
-                    document.getElementById('mobile_details_div').style.display = 'block';
-                    document.getElementById('mobile_name_div').style.display = 'block';
-                    break;
-                case 'cash_bank':
-                    // Bank payment - no additional fields needed since bank data is already available
-                    break;
-                // 'akiba' doesn't need additional fields
-            }
+        document.querySelectorAll('input[name="payment_method"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                const method = this.value;
+                
+                // Hide all conditional fields
+                document.getElementById('impe_years_div').style.display = 'none';
+                document.getElementById('mobile_details_div').style.display = 'none';
+                document.getElementById('mobile_name_div').style.display = 'none';
+                
+                // Show relevant fields based on selection
+                switch(method) {
+                    case 'impe':
+                        document.getElementById('impe_years_div').style.display = 'block';
+                        break;
+                    case 'cash_mobile':
+                        document.getElementById('mobile_details_div').style.display = 'block';
+                        document.getElementById('mobile_name_div').style.display = 'block';
+                        break;
+                    case 'cash_bank':
+                        // Bank payment - no additional fields needed since bank data is already available
+                        break;
+                    // 'akiba' doesn't need additional fields
+                }
+            });
         });
     </script>
 </body>

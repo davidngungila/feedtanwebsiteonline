@@ -310,9 +310,12 @@
                                         {{ $confirmation->created_at->format('d M Y') }}
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                        <form method="POST" action="{{ route('fia.admin.update.status', $confirmation->id) }}" class="inline">
+                                        <a href="{{ route('fia.admin.edit', $confirmation->id) }}" class="text-indigo-600 hover:text-indigo-900 mr-3">
+                                            Edit
+                                        </a>
+                                        <form action="{{ route('fia.admin.status', $confirmation->id) }}" method="POST" class="inline">
                                             @csrf
-                                            <select name="status" onchange="this.form.submit()" class="text-xs border rounded px-2 py-1">
+                                            <select name="status" onchange="this.form.submit()" class="text-sm border-gray-300 rounded-md focus:ring-green-500 focus:border-green-500">
                                                 <option value="pending" {{ $confirmation->status == 'pending' ? 'selected' : '' }}>Pending</option>
                                                 <option value="verified" {{ $confirmation->status == 'verified' ? 'selected' : '' }}>Verified</option>
                                                 <option value="rejected" {{ $confirmation->status == 'rejected' ? 'selected' : '' }}>Rejected</option>

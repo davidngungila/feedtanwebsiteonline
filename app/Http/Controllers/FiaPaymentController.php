@@ -107,7 +107,60 @@ class FiaPaymentController extends Controller
             ->with('success', 'Your payment verification has been submitted successfully!');
     }
 
-    // Show confirmation page
+    // Edit payment record (admin only)
+    public function editPayment($id)
+    {
+        $confirmation = FiaPaymentConfirmation::findOrFail($id);
+        $paymentRecord = $confirmation->paymentRecord;
+        
+        return view('fia.edit-payment', compact('confirmation', 'paymentRecord'));
+    }
+
+    // Update payment record (admin only)
+    public function updatePayment(Request $request, $id)
+    {
+        $request->validate([
+            'gawio_la_fia' => 'required|numeric|min:0',
+            'fia_iliyokomaa' => 'required|numeric|min:0',
+            'malipo_vya_vipande' => 'nullable|numeric|min:0',
+            'loan' => 'nullable|numeric|min:0',
+            'notes' => 'nullable|string'
+        ]);
+
+        $confirmation = FiaPaymentConfirmation::findOrFail($id);
+        
+        // Calculate jumla and kiasi_baki
+        $gawio = $request->gawio_la_fia;
+        $fiaKoma = $request->fia_iliyokomaa;
+        $jumla = $gawio + $fiaKoma;
+        $malipoVip = $request->malipo_vya_vipande ?: 0;
+        $loan = $request->loan ?: 0;
+        $kiasiBaki = $jumla - $malipoVip - $loan;
+
+        // Update payment record
+        $paymentRecord = FiaPaymentRecord::updateOrCreate(
+            ['member_id' => $confirmation->member_id],
+            [
+                'gawio_la_fia' => $gawio,
+                'fia_iliyokomaa' => $fiaKoma,
+                'jumla' => $jumla,
+                'malipo_vya_vipande' => $malipoVip,
+                'loan' => $loan,
+                'kiasi_baki' => $kiasiBaki,
+                'status' => 'pending',
+                'notes' => $request->notes
+            ]
+        );
+
+        // Update confirmation amount_to_pay
+        $confirmation->update([
+            'amount_to_pay' => $jumla,
+            'notes' => $request->notes
+        ]);
+
+        return redirect()->route('fia.admin.dashboard')
+            ->with('success', 'Payment record updated successfully!');
+    }
     public function confirmation($id)
     {
         $confirmation = FiaPaymentConfirmation::findOrFail($id);
