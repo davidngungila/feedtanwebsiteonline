@@ -63,7 +63,7 @@ class FiaPaymentController extends Controller
             'impe_years' => 'required_if:payment_method,impe|in:4,6',
             'mobile_number' => 'required_if:payment_method,cash_mobile|string',
             'mobile_account_name' => 'required_if:payment_method,cash_mobile|string',
-            'bank_name' => 'required_if:payment_method,cash_bank|string',
+            'bank_name' => 'nullable|string',
             'notes' => 'nullable|string'
         ]);
 

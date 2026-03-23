@@ -79,7 +79,7 @@
                                     <div class="mt-1">
                                         <input type="number" id="amount_to_pay" name="amount_to_pay" step="0.01" readonly
                                                class="shadow-sm bg-gray-100 block w-full sm:text-sm border-gray-300 rounded-md cursor-not-allowed"
-                                               value="{{ number_format($paymentRecord->jumla ?? 0, 2) }}">
+                                               value="{{ number_format($paymentRecord->jumla ?? $confirmation->amount_to_pay ?? 0, 2) }}">
                                     </div>
                                 </div>
 
@@ -112,7 +112,7 @@
                                     <div class="mt-1">
                                         <input type="number" id="jumla" name="jumla" step="0.01" readonly
                                                class="shadow-sm bg-gray-100 block w-full sm:text-sm border-gray-300 rounded-md cursor-not-allowed"
-                                               value="{{ number_format($paymentRecord->jumla ?? 0, 2) }}">
+                                               value="{{ number_format($paymentRecord->jumla ?? $confirmation->amount_to_pay ?? 0, 2) }}">
                                     </div>
                                 </div>
 
@@ -201,17 +201,6 @@
                                     </div>
                                 </div>
 
-                                <div class="sm:col-span-1" id="bank_details_div" style="display: none;">
-                                    <label for="bank_name" class="block text-sm font-medium text-gray-700">
-                                        Jina la Benki
-                                    </label>
-                                    <div class="mt-1">
-                                        <input type="text" id="bank_name" name="bank_name"
-                                               class="shadow-sm focus:ring-green-500 focus:border-green-500 block w-full sm:text-sm border-gray-300 rounded-md"
-                                               placeholder="Enter bank name">
-                                    </div>
-                                </div>
-
                                 <div class="sm:col-span-2">
                                     <label for="notes" class="block text-sm font-medium text-gray-700">
                                         Additional Notes
@@ -248,7 +237,6 @@
             document.getElementById('impe_years_div').style.display = 'none';
             document.getElementById('mobile_details_div').style.display = 'none';
             document.getElementById('mobile_name_div').style.display = 'none';
-            document.getElementById('bank_details_div').style.display = 'none';
             
             // Show relevant fields based on selection
             switch(method) {
@@ -260,7 +248,7 @@
                     document.getElementById('mobile_name_div').style.display = 'block';
                     break;
                 case 'cash_bank':
-                    document.getElementById('bank_details_div').style.display = 'block';
+                    // Bank payment - no additional fields needed since bank data is already available
                     break;
                 // 'akiba' doesn't need additional fields
             }
