@@ -68,23 +68,6 @@
                     </p>
                 </div>
             </form>
-
-            <div class="mt-6">
-                <div class="relative">
-                    <div class="absolute inset-0 flex items-center">
-                        <div class="w-full border-t border-gray-300"></div>
-                    </div>
-                    <div class="relative flex justify-center text-sm">
-                        <span class="px-2 bg-gray-50 text-gray-500">Need Help?</span>
-                    </div>
-                </div>
-
-                <div class="mt-6 text-center">
-                    <a href="{{ route('fia.admin.passcode') }}" class="font-medium text-green-600 hover:text-green-500">
-                        Admin Access
-                    </a>
-                </div>
-            </div>
         </div>
     </div>
 </body>
