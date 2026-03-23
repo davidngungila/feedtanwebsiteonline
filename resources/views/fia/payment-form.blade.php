@@ -77,8 +77,8 @@
                                         Total Amount to Pay (TZS)
                                     </label>
                                     <div class="mt-1">
-                                        <input type="number" id="amount_to_pay" name="amount_to_pay" step="0.01" readonly
-                                               class="shadow-sm bg-gray-100 block w-full sm:text-sm border-gray-300 rounded-md cursor-not-allowed"
+                                        <input type="number" id="amount_to_pay" name="amount_to_pay" step="0.01"
+                                               class="shadow-sm focus:ring-green-500 focus:border-green-500 block w-full sm:text-sm border-gray-300 rounded-md"
                                                value="{{ number_format($paymentRecord->jumla ?? $confirmation->amount_to_pay ?? 0, 2) }}">
                                     </div>
                                 </div>
@@ -88,8 +88,8 @@
                                         Gawio la FIA (TZS)
                                     </label>
                                     <div class="mt-1">
-                                        <input type="number" id="gawio_la_fia" name="gawio_la_fia" step="0.01" readonly
-                                               class="shadow-sm bg-gray-100 block w-full sm:text-sm border-gray-300 rounded-md cursor-not-allowed"
+                                        <input type="number" id="gawio_la_fia" name="gawio_la_fia" step="0.01"
+                                               class="shadow-sm focus:ring-green-500 focus:border-green-500 block w-full sm:text-sm border-gray-300 rounded-md"
                                                value="{{ number_format($paymentRecord->gawio_la_fia ?? 0, 2) }}">
                                     </div>
                                 </div>
@@ -99,8 +99,8 @@
                                         FIA Ilivyo Koma (TZS)
                                     </label>
                                     <div class="mt-1">
-                                        <input type="number" id="fia_iliyokomaa" name="fia_iliyokomaa" step="0.01" readonly
-                                               class="shadow-sm bg-gray-100 block w-full sm:text-sm border-gray-300 rounded-md cursor-not-allowed"
+                                        <input type="number" id="fia_iliyokomaa" name="fia_iliyokomaa" step="0.01"
+                                               class="shadow-sm focus:ring-green-500 focus:border-green-500 block w-full sm:text-sm border-gray-300 rounded-md"
                                                value="{{ number_format($paymentRecord->fia_iliyokomaa ?? 0, 2) }}">
                                     </div>
                                 </div>
@@ -113,6 +113,7 @@
                                         <input type="number" id="jumla" name="jumla" step="0.01" readonly
                                                class="shadow-sm bg-gray-100 block w-full sm:text-sm border-gray-300 rounded-md cursor-not-allowed"
                                                value="{{ number_format($paymentRecord->jumla ?? $confirmation->amount_to_pay ?? 0, 2) }}">
+                                        <p class="mt-1 text-xs text-gray-500">Auto-calculated: Gawio + FIA Koma</p>
                                     </div>
                                 </div>
 
@@ -121,8 +122,8 @@
                                         Malipo ya VIP (TZS)
                                     </label>
                                     <div class="mt-1">
-                                        <input type="number" id="malipo_vya_vipande" name="malipo_vya_vipande" step="0.01" readonly
-                                               class="shadow-sm bg-gray-100 block w-full sm:text-sm border-gray-300 rounded-md cursor-not-allowed"
+                                        <input type="number" id="malipo_vya_vipande" name="malipo_vya_vipande" step="0.01"
+                                               class="shadow-sm focus:ring-green-500 focus:border-green-500 block w-full sm:text-sm border-gray-300 rounded-md"
                                                value="{{ number_format($paymentRecord->malipo_vya_vipande ?? 0, 2) }}">
                                     </div>
                                 </div>
@@ -132,9 +133,9 @@
                                         Loan Reference
                                     </label>
                                     <div class="mt-1">
-                                        <input type="text" id="loan" name="loan" readonly
-                                               class="shadow-sm bg-gray-100 block w-full sm:text-sm border-gray-300 rounded-md cursor-not-allowed"
-                                               value="{{ $paymentRecord->loan ?? 'N/A' }}">
+                                        <input type="text" id="loan" name="loan"
+                                               class="shadow-sm focus:ring-green-500 focus:border-green-500 block w-full sm:text-sm border-gray-300 rounded-md"
+                                               value="{{ $paymentRecord->loan ?? '' }}" placeholder="Enter loan reference if applicable">
                                     </div>
                                 </div>
 
@@ -143,8 +144,8 @@
                                         Kiasi Baki (TZS)
                                     </label>
                                     <div class="mt-1">
-                                        <input type="number" id="kiasi_baki" name="kiasi_baki" step="0.01" readonly
-                                               class="shadow-sm bg-gray-100 block w-full sm:text-sm border-gray-300 rounded-md cursor-not-allowed"
+                                        <input type="number" id="kiasi_baki" name="kiasi_baki" step="0.01"
+                                               class="shadow-sm focus:ring-green-500 focus:border-green-500 block w-full sm:text-sm border-gray-300 rounded-md"
                                                value="{{ number_format($paymentRecord->kiasi_baki ?? 0, 2) }}">
                                     </div>
                                 </div>
@@ -229,6 +230,20 @@
     </div>
 
     <script>
+        // Auto-calculate jumla when gawio or fia_iliyokomaa changes
+        document.getElementById('gawio_la_fia').addEventListener('input', calculateJumla);
+        document.getElementById('fia_iliyokomaa').addEventListener('input', calculateJumla);
+
+        function calculateJumla() {
+            const gawio = parseFloat(document.getElementById('gawio_la_fia').value) || 0;
+            const fiaKoma = parseFloat(document.getElementById('fia_iliyokomaa').value) || 0;
+            const jumla = gawio + fiaKoma;
+            document.getElementById('jumla').value = jumla.toFixed(2);
+            
+            // Also update amount_to_pay to match jumla
+            document.getElementById('amount_to_pay').value = jumla.toFixed(2);
+        }
+
         // Handle payment method selection
         document.getElementById('payment_method').addEventListener('change', function() {
             const method = this.value;
@@ -253,9 +268,6 @@
                 // 'akiba' doesn't need additional fields
             }
         });
-
-        // Remove auto-calculation since fields are now readonly
-        // The calculation is already done in the database
     </script>
 </body>
 </html>
