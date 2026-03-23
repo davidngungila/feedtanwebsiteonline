@@ -45,27 +45,31 @@ class FiaPaymentController extends Controller
         if (!$paymentRecord) {
             // Check if there's a confirmation with the correct amount
             if ($confirmation && $confirmation->amount_to_pay > 0) {
-                // Create payment record based on confirmation data
-                $paymentRecord = new FiaPaymentRecord();
-                $paymentRecord->member_id = $memberId;
-                $paymentRecord->gawio_la_fia = $confirmation->amount_to_pay; // Use confirmation amount as gawio
-                $paymentRecord->fia_iliyokomaa = 0;
-                $paymentRecord->jumla = $confirmation->amount_to_pay;
-                $paymentRecord->malipo_vya_vipande = 0;
-                $paymentRecord->loan = 0;
-                $paymentRecord->kiasi_baki = $confirmation->amount_to_pay;
-                $paymentRecord->status = 'pending';
+                // Create payment record based on confirmation data and save it
+                $paymentRecord = FiaPaymentRecord::create([
+                    'member_id' => $memberId,
+                    'gawio_la_fia' => $confirmation->amount_to_pay, // Use confirmation amount as gawio
+                    'fia_iliyokomaa' => 0,
+                    'jumla' => $confirmation->amount_to_pay,
+                    'malipo_vya_vipande' => 0,
+                    'loan' => 0,
+                    'kiasi_baki' => $confirmation->amount_to_pay,
+                    'status' => 'pending',
+                    'notes' => 'Auto-created from confirmation data'
+                ]);
             } else {
                 // Create empty record if no data available
-                $paymentRecord = new FiaPaymentRecord();
-                $paymentRecord->member_id = $memberId;
-                $paymentRecord->gawio_la_fia = 0;
-                $paymentRecord->fia_iliyokomaa = 0;
-                $paymentRecord->jumla = 0;
-                $paymentRecord->malipo_vya_vipande = 0;
-                $paymentRecord->loan = 0;
-                $paymentRecord->kiasi_baki = 0;
-                $paymentRecord->status = 'pending';
+                $paymentRecord = FiaPaymentRecord::create([
+                    'member_id' => $memberId,
+                    'gawio_la_fia' => 0,
+                    'fia_iliyokomaa' => 0,
+                    'jumla' => 0,
+                    'malipo_vya_vipande' => 0,
+                    'loan' => 0,
+                    'kiasi_baki' => 0,
+                    'status' => 'pending',
+                    'notes' => 'Empty record created'
+                ]);
             }
         }
 
