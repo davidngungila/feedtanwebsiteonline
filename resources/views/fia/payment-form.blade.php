@@ -62,7 +62,64 @@
                 <input type="hidden" name="member_id" value="{{ $memberId }}">
                 <input type="hidden" name="member_name" value="{{ $member['name'] }}">
                 <input type="hidden" name="member_type" value="{{ $member['type'] }}">
-                <input type="hidden" name="member_email" value="{{ $member['email'] }}">
+
+                <!-- Member Email Input -->
+                <div class="bg-white shadow overflow-hidden sm:rounded-lg">
+                    <div class="px-4 py-5 sm:px-6">
+                        <h3 class="text-lg leading-6 font-medium text-gray-900">Member Information</h3>
+                        <p class="mt-1 max-w-2xl text-sm text-gray-500">Please confirm your email address</p>
+                    </div>
+                    <div class="border-t border-gray-200">
+                        <div class="px-4 py-5 sm:p-6">
+                            <div class="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-2">
+                                <div class="sm:col-span-1">
+                                    <label for="member_name" class="block text-sm font-medium text-gray-700">
+                                        Member Name
+                                    </label>
+                                    <div class="mt-1">
+                                        <input type="text" id="member_name" name="member_name" readonly
+                                               class="shadow-sm bg-gray-100 block w-full sm:text-sm border-gray-300 rounded-md cursor-not-allowed"
+                                               value="{{ $member['name'] }}">
+                                    </div>
+                                </div>
+
+                                <div class="sm:col-span-1">
+                                    <label for="member_email" class="block text-sm font-medium text-gray-700">
+                                        Email Address <span class="text-red-500">*</span>
+                                    </label>
+                                    <div class="mt-1">
+                                        <input type="email" id="member_email" name="member_email" required
+                                               class="shadow-sm focus:ring-green-500 focus:border-green-500 block w-full sm:text-sm border-gray-300 rounded-md"
+                                               placeholder="Enter your email address" value="{{ old('member_email') }}">
+                                        <p class="mt-1 text-xs text-gray-500">Please enter your own email address</p>
+                                    </div>
+                                </div>
+
+                                <div class="sm:col-span-1">
+                                    <label for="member_type" class="block text-sm font-medium text-gray-700">
+                                        Member Type
+                                    </label>
+                                    <div class="mt-1">
+                                        <input type="text" id="member_type" name="member_type" readonly
+                                               class="shadow-sm bg-gray-100 block w-full sm:text-sm border-gray-300 rounded-md cursor-not-allowed"
+                                               value="{{ $member['type'] }}">
+                                    </div>
+                                </div>
+
+                                <div class="sm:col-span-1">
+                                    <label for="member_id_display" class="block text-sm font-medium text-gray-700">
+                                        Member ID
+                                    </label>
+                                    <div class="mt-1">
+                                        <input type="text" id="member_id_display" name="member_id_display" readonly
+                                               class="shadow-sm bg-gray-100 block w-full sm:text-sm border-gray-300 rounded-md cursor-not-allowed"
+                                               value="{{ $memberId }}">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
                 <div class="bg-white shadow overflow-hidden sm:rounded-lg">
                     <div class="px-4 py-5 sm:px-6">
