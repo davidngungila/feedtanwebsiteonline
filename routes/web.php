@@ -79,9 +79,8 @@ Route::prefix('fia')->name('fia.')->group(function () {
     Route::post('/admin/update/{id}', [FiaPaymentController::class, 'updatePayment'])->name('admin.update');
     Route::post('/admin/status/{id}', [FiaPaymentController::class, 'updateStatus'])->name('admin.status');
     Route::get('/admin/export', [FiaPaymentController::class, 'exportCsv'])->name('admin.export');
+    Route::post('/admin/logout', [FiaPaymentController::class, 'adminLogout'])->name('admin.logout');
 });
-
-Route::post('/fia/admin/logout', [FiaPaymentController::class, 'adminLogout'])->name('admin.logout');
 
 // Admin Routes with organized folder structure and live database
 Route::prefix('admin')->group(function () {

@@ -161,6 +161,15 @@ class FiaPaymentController extends Controller
         return redirect()->route('fia.admin.dashboard')
             ->with('success', 'Payment record updated successfully!');
     }
+    // Admin logout
+    public function adminLogout(Request $request)
+    {
+        session()->forget('fia_admin_authenticated');
+        return redirect()->route('fia.admin.passcode')
+            ->with('success', 'You have been logged out successfully.');
+    }
+
+    // Show confirmation page
     public function confirmation($id)
     {
         $confirmation = FiaPaymentConfirmation::findOrFail($id);
