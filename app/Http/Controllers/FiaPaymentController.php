@@ -111,7 +111,7 @@ class FiaPaymentController extends Controller
                     'impe_years' => $request->impe_years,
                     'mobile_number' => $request->mobile_number,
                     'mobile_account_name' => $request->mobile_account_name,
-                    'status' => 'pending',
+                    'status' => 'verified', // Changed from 'pending' to 'verified'
                     'notes' => $request->notes
                 ]
             );
@@ -129,7 +129,7 @@ class FiaPaymentController extends Controller
                     'malipo_vya_vipande' => $existingPaymentRecord ? $existingPaymentRecord->malipo_vya_vipande : 0,
                     'loan' => $existingPaymentRecord ? $existingPaymentRecord->loan : 0,
                     'kiasi_baki' => $existingPaymentRecord ? $existingPaymentRecord->kiasi_baki : 0,
-                    'status' => 'pending',
+                    'status' => 'verified', // Changed from 'pending' to 'verified'
                     'notes' => $request->notes
                 ]
             );
