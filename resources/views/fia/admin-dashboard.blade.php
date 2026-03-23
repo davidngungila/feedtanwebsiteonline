@@ -365,104 +365,184 @@
             <!-- Results Table -->
             <div class="glass-effect rounded-xl overflow-hidden">
                 <div class="px-6 py-4 border-b border-gray-200">
-                    <h3 class="font-manrope text-lg font-semibold text-gray-900">Payment Submissions</h3>
-                    <p class="text-sm text-gray-500 mt-1">Showing {{ $confirmations->firstItem() }} to {{ $confirmations->lastItem() }} of {{ $confirmations->total() }} results</p>
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <h3 class="font-manrope text-lg font-semibold text-gray-900">Payment Submissions</h3>
+                            <p class="text-sm text-gray-500 mt-1">Showing {{ $confirmations->firstItem() ?? 0 }} to {{ $confirmations->lastItem() ?? 0 }} of {{ $confirmations->total() }} results</p>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <span class="text-sm text-gray-500">Sort by:</span>
+                            <select class="text-sm border border-gray-300 rounded-lg px-3 py-1 focus:ring-2 focus:ring-green-500 focus:border-transparent">
+                                <option>Latest First</option>
+                                <option>Oldest First</option>
+                                <option>Member ID</option>
+                                <option>Status</option>
+                            </select>
+                        </div>
+                    </div>
                 </div>
                 <div class="overflow-x-auto">
                     <table class="min-w-full divide-y divide-gray-200">
                         <thead class="bg-gray-50">
                             <tr>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Member ID</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Amount</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Gawio</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">FIA Koma</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Jumla</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Payment Method</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
+                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Member</th>
+                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
+                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Amount</th>
+                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Balance</th>
+                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Method</th>
+                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
                             @forelse($confirmations as $confirmation)
-                                <tr class="table-hover">
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                                        #{{ str_pad($confirmation->id, 6, '0', STR_PAD_LEFT) }}
+                                @php
+                                    // Skip duplicate entries based on member_id and created_at
+                                    $uniqueKey = $confirmation->member_id . '_' . $confirmation->created_at->format('Y-m-d_H-i-s');
+                                    if(isset($shownRecords) && in_array($uniqueKey, $shownRecords)) continue;
+                                    $shownRecords[] = $uniqueKey;
+                                @endphp
+                                <tr class="table-hover hover:bg-green-50 transition-colors">
+                                    <td class="px-4 py-4 whitespace-nowrap">
+                                        <div class="flex flex-col">
+                                            <span class="text-sm font-medium text-gray-900 font-charon">#{{ str_pad($confirmation->id, 6, '0', STR_PAD_LEFT) }}</span>
+                                            <span class="text-xs text-gray-500">{{ $confirmation->created_at->format('H:i') }}</span>
+                                        </div>
                                     </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                        {{ $confirmation->member_id }}
+                                    <td class="px-4 py-4 whitespace-nowrap">
+                                        <div class="flex flex-col">
+                                            <div class="flex items-center">
+                                                <div class="w-6 h-6 bg-gradient-to-br from-green-400 to-green-600 rounded-full flex items-center justify-center mr-2">
+                                                    <span class="text-white text-xs font-bold">{{ substr($confirmation->member_id, 0, 1) }}</span>
+                                                </div>
+                                                <div>
+                                                    <p class="text-sm font-medium text-gray-900">{{ $confirmation->member_name }}</p>
+                                                    <p class="text-xs text-gray-500 font-charon">{{ $confirmation->member_id }}</p>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                        {{ $confirmation->member_name }}
+                                    <td class="px-4 py-4 whitespace-nowrap">
+                                        <span class="px-2 py-1 text-xs rounded-full bg-indigo-100 text-indigo-800 font-medium">
+                                            {{ $confirmation->member_type }}
+                                        </span>
                                     </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                        {{ $confirmation->member_type }}
+                                    <td class="px-4 py-4 whitespace-nowrap">
+                                        <div class="text-sm">
+                                            <p class="font-medium text-gray-900 font-charon">{{ number_format($confirmation->amount_to_pay, 2) }}</p>
+                                            <p class="text-xs text-gray-500">TZS</p>
+                                        </div>
                                     </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                        {{ number_format($confirmation->amount_to_pay, 2) }}
+                                    <td class="px-4 py-4 whitespace-nowrap">
+                                        <div class="text-sm">
+                                            @if($confirmation->paymentRecord)
+                                                <p class="font-medium text-green-600 font-charon">{{ number_format($confirmation->paymentRecord->kiasi_baki, 2) }}</p>
+                                                <p class="text-xs text-gray-500">TZS</p>
+                                            @else
+                                                <p class="font-medium text-gray-400 font-charon">0.00</p>
+                                                <p class="text-xs text-gray-400">TZS</p>
+                                            @endif
+                                        </div>
                                     </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                        {{ $confirmation->paymentRecord ? number_format($confirmation->paymentRecord->gawio_la_fia, 2) : '0.00' }}
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                        {{ $confirmation->paymentRecord ? number_format($confirmation->paymentRecord->fia_iliyokomaa, 2) : '0.00' }}
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                        {{ $confirmation->paymentRecord ? number_format($confirmation->paymentRecord->jumla, 2) : '0.00' }}
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                    <td class="px-4 py-4 whitespace-nowrap">
                                         @if($confirmation->payment_method)
                                             @switch($confirmation->payment_method)
                                                 @case('akiba')
-                                                    <span class="px-3 py-1 text-xs rounded-full bg-blue-100 text-blue-800 font-medium">Akiba</span>
+                                                    <div class="flex items-center">
+                                                        <div class="w-4 h-4 bg-blue-500 rounded-full mr-1"></div>
+                                                        <span class="text-xs">Akiba</span>
+                                                    </div>
                                                     @break
                                                 @case('impe')
-                                                    <span class="px-3 py-1 text-xs rounded-full bg-purple-100 text-purple-800 font-medium">IMPE {{ $confirmation->impe_years }}y</span>
+                                                    <div class="flex items-center">
+                                                        <div class="w-4 h-4 bg-purple-500 rounded-full mr-1"></div>
+                                                        <span class="text-xs">IMPE {{ $confirmation->impe_years ?? '' }}y</span>
+                                                    </div>
                                                     @break
                                                 @case('cash_mobile')
-                                                    <span class="px-3 py-1 text-xs rounded-full bg-green-100 text-green-800 font-medium">Mobile</span>
+                                                    <div class="flex items-center">
+                                                        <div class="w-4 h-4 bg-green-500 rounded-full mr-1"></div>
+                                                        <span class="text-xs">Mobile</span>
+                                                    </div>
                                                     @break
                                                 @case('cash_bank')
-                                                    <span class="px-3 py-1 text-xs rounded-full bg-yellow-100 text-yellow-800 font-medium">Bank</span>
+                                                    <div class="flex items-center">
+                                                        <div class="w-4 h-4 bg-yellow-500 rounded-full mr-1"></div>
+                                                        <span class="text-xs">Bank</span>
+                                                    </div>
                                                     @break
+                                                @default
+                                                    <span class="text-xs text-gray-400">Unknown</span>
                                             @endswitch
                                         @else
-                                            <span class="text-gray-400">Not set</span>
+                                            <span class="text-xs text-gray-400">Not set</span>
                                         @endif
                                     </td>
-                                    <td class="px-6 py-4 whitespace-nowrap">
+                                    <td class="px-4 py-4 whitespace-nowrap">
                                         @if($confirmation->status == 'pending')
-                                            <span class="badge-pending px-3 py-1 text-xs rounded-full text-white font-medium">Pending</span>
+                                            <span class="badge-pending px-2 py-1 text-xs rounded-full text-white font-medium">Pending</span>
                                         @elseif($confirmation->status == 'verified')
-                                            <span class="badge-success px-3 py-1 text-xs rounded-full text-white font-medium">Verified</span>
+                                            <span class="badge-success px-2 py-1 text-xs rounded-full text-white font-medium">Verified</span>
                                         @elseif($confirmation->status == 'rejected')
-                                            <span class="badge-rejected px-3 py-1 text-xs rounded-full text-white font-medium">Rejected</span>
+                                            <span class="badge-rejected px-2 py-1 text-xs rounded-full text-white font-medium">Rejected</span>
+                                        @else
+                                            <span class="px-2 py-1 text-xs rounded-full bg-gray-100 text-gray-800 font-medium">Unknown</span>
                                         @endif
                                     </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                        {{ $confirmation->created_at->format('M d, Y') }}
+                                    <td class="px-4 py-4 whitespace-nowrap">
+                                        <div class="text-sm text-gray-500">
+                                            <p>{{ $confirmation->created_at->format('M d, Y') }}</p>
+                                            <p class="text-xs">{{ $confirmation->created_at->format('H:i A') }}</p>
+                                        </div>
                                     </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                        <div class="flex space-x-2">
-                                            <a href="{{ route('fia.admin.edit', $confirmation->id) }}" class="text-green-600 hover:text-green-900 font-medium">Edit</a>
-                                            <form action="{{ route('fia.admin.status', $confirmation->id) }}" method="POST" class="inline">
-                                                @csrf
-                                                @if($confirmation->status == 'pending')
-                                                    <button type="submit" name="status" value="verified" class="text-blue-600 hover:text-blue-900 font-medium">Verify</button>
-                                                @elseif($confirmation->status == 'verified')
-                                                    <button type="submit" name="status" value="rejected" class="text-red-600 hover:text-red-900 font-medium">Reject</button>
-                                                @endif
-                                            </form>
-                                            <a href="{{ route('fia.confirmation', $confirmation->id) }}" class="text-gray-600 hover:text-gray-900 font-medium">View</a>
+                                    <td class="px-4 py-4 whitespace-nowrap text-sm font-medium">
+                                        <div class="flex items-center space-x-1">
+                                            <a href="{{ route('fia.admin.edit', $confirmation->id) }}" 
+                                               class="text-green-600 hover:text-green-900 p-1 hover:bg-green-50 rounded transition-colors" 
+                                               title="Edit">
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                                                </svg>
+                                            </a>
+                                            @if($confirmation->status == 'pending')
+                                                <form action="{{ route('fia.admin.status', $confirmation->id) }}" method="POST" class="inline">
+                                                    @csrf
+                                                    <button type="submit" name="status" value="verified" 
+                                                            class="text-blue-600 hover:text-blue-900 p-1 hover:bg-blue-50 rounded transition-colors" 
+                                                            title="Verify">
+                                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                                        </svg>
+                                                    </button>
+                                                </form>
+                                            @elseif($confirmation->status == 'verified')
+                                                <form action="{{ route('fia.admin.status', $confirmation->id) }}" method="POST" class="inline">
+                                                    @csrf
+                                                    <button type="submit" name="status" value="rejected" 
+                                                            class="text-red-600 hover:text-red-900 p-1 hover:bg-red-50 rounded transition-colors" 
+                                                            title="Reject">
+                                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                                        </svg>
+                                                    </button>
+                                                </form>
+                                            @endif
+                                            <a href="{{ route('fia.confirmation', $confirmation->id) }}" 
+                                               class="text-gray-600 hover:text-gray-900 p-1 hover:bg-gray-50 rounded transition-colors" 
+                                               title="View">
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                                                </svg>
+                                            </a>
                                         </div>
                                     </td>
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="12" class="px-6 py-12 text-center text-gray-500">
+                                    <td colspan="9" class="px-6 py-12 text-center text-gray-500">
                                         <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
                                         </svg>
@@ -475,10 +555,19 @@
                     </table>
                 </div>
                 
-                <!-- Pagination -->
+                <!-- Enhanced Pagination -->
                 @if($confirmations->hasPages())
-                    <div class="px-6 py-4 border-t border-gray-200">
-                        {{ $confirmations->links() }}
+                    <div class="px-6 py-4 border-t border-gray-200 bg-gray-50">
+                        <div class="flex items-center justify-between">
+                            <div class="text-sm text-gray-700">
+                                Showing <span class="font-medium">{{ $confirmations->firstItem() ?? 0 }}</span> to 
+                                <span class="font-medium">{{ $confirmations->lastItem() ?? 0 }}</span> of 
+                                <span class="font-medium">{{ $confirmations->total() }}</span> results
+                            </div>
+                            <div>
+                                {{ $confirmations->links() }}
+                            </div>
+                        </div>
                     </div>
                 @endif
             </div>
