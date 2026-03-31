@@ -417,30 +417,36 @@ class FiaPaymentController extends Controller
             return redirect()->route('fia.admin.passcode');
         }
 
+        // Get all confirmations without pagination for complete export
         $query = FiaPaymentConfirmation::with('paymentRecord');
 
-        // Apply filters
+        // Apply filters if specified, but get all records
         if ($request->filled('status')) {
             $query->byStatus($request->status);
         }
 
-        $confirmations = $query->orderBy('created_at', 'desc')->get();
-
+        // Use chunking to handle large datasets
         $headers = [
-            'Content-Type' => 'text/csv',
-            'Content-Disposition' => 'attachment; filename="fia_payments_' . date('Y-m-d_H-i-s') . '.csv"',
+            'Content-Type' => 'text/csv; charset=utf-8',
+            'Content-Disposition' => 'attachment; filename="fia_payments_export_' . date('Y-m-d_H-i-s') . '.csv"',
+            'Cache-Control' => 'no-cache, must-revalidate',
+            'Pragma' => 'no-cache',
         ];
 
-        $callback = function() use ($confirmations) {
+        $callback = function() use ($query) {
             $file = fopen('php://output', 'w');
             
-            // CSV Header
+            // Add BOM for proper UTF-8 encoding in Excel
+            fprintf($file, chr(0xEF).chr(0xBB).chr(0xBF));
+            
+            // Enhanced CSV Header with all available fields
             fputcsv($file, [
                 'ID',
                 'Member ID',
                 'Member Name',
                 'Member Type',
                 'Email',
+                'Phone',
                 'Amount to Pay',
                 'Gawio la FIA',
                 'FIA Ilivyo Koma',
@@ -452,51 +458,62 @@ class FiaPaymentController extends Controller
                 'Mobile Number',
                 'Mobile Account Name',
                 'Bank Name',
+                'Transaction ID',
                 'Status',
                 'Submission Date',
-                'Notes'
+                'Updated Date',
+                'Notes',
+                'IP Address',
+                'User Agent'
             ]);
 
-            // CSV Data
-            foreach ($confirmations as $confirmation) {
-                $paymentMethodText = '';
-                switch ($confirmation->payment_method) {
-                    case 'akiba':
-                        $paymentMethodText = 'Naweka Akiba';
-                        break;
-                    case 'cash_mobile':
-                        $paymentMethodText = 'CASH - Kwa Simu (Halopes/Mix By Yas)';
-                        break;
-                    case 'cash_bank':
-                        $paymentMethodText = 'CASH - Bank Transfer';
-                        break;
-                    default:
-                        $paymentMethodText = 'Unknown';
-                        break;
-                }
+            // Process data in chunks to handle large datasets
+            $query->orderBy('created_at', 'desc')->chunk(1000, function($confirmations) {
+                foreach ($confirmations as $confirmation) {
+                    $paymentMethodText = '';
+                    switch ($confirmation->payment_method) {
+                        case 'akiba':
+                            $paymentMethodText = 'Naweka Akiba';
+                            break;
+                        case 'cash_mobile':
+                            $paymentMethodText = 'CASH - Kwa Simu (Halopes/Mix By Yas)';
+                            break;
+                        case 'cash_bank':
+                            $paymentMethodText = 'CASH - Bank Transfer';
+                            break;
+                        default:
+                            $paymentMethodText = 'Unknown';
+                            break;
+                    }
 
-                fputcsv($file, [
-                    $confirmation->id,
-                    $confirmation->member_id,
-                    $confirmation->member_name,
-                    $confirmation->member_type,
-                    $confirmation->member_email,
-                    number_format($confirmation->amount_to_pay, 2),
-                    $confirmation->paymentRecord ? number_format($confirmation->paymentRecord->gawio_la_fia, 2) : '0.00',
-                    $confirmation->paymentRecord ? number_format($confirmation->paymentRecord->fia_iliyokomaa, 2) : '0.00',
-                    $confirmation->paymentRecord ? number_format($confirmation->paymentRecord->jumla, 2) : '0.00',
-                    $confirmation->paymentRecord ? number_format($confirmation->paymentRecord->malipo_vya_vipande ?: 0, 2) : '0.00',
-                    $confirmation->paymentRecord ? $confirmation->paymentRecord->loan : '',
-                    $confirmation->paymentRecord ? number_format($confirmation->paymentRecord->kiasi_baki, 2) : '0.00',
-                    $paymentMethodText,
-                    $confirmation->mobile_number ?: '',
-                    $confirmation->mobile_account_name ?: '',
-                    $confirmation->bank_name ?: '',
-                    $confirmation->status,
-                    $confirmation->created_at->format('Y-m-d H:i:s'),
-                    $confirmation->notes
-                ]);
-            }
+                    fputcsv($file, [
+                        $confirmation->id,
+                        $confirmation->member_id,
+                        $confirmation->member_name,
+                        $confirmation->member_type,
+                        $confirmation->member_email,
+                        $confirmation->member_phone ?? '',
+                        number_format($confirmation->amount_to_pay, 2),
+                        $confirmation->paymentRecord ? number_format($confirmation->paymentRecord->gawio_la_fia, 2) : '0.00',
+                        $confirmation->paymentRecord ? number_format($confirmation->paymentRecord->fia_iliyokomaa, 2) : '0.00',
+                        $confirmation->paymentRecord ? number_format($confirmation->paymentRecord->jumla, 2) : '0.00',
+                        $confirmation->paymentRecord ? number_format($confirmation->paymentRecord->malipo_vya_vipande ?: 0, 2) : '0.00',
+                        $confirmation->paymentRecord ? $confirmation->paymentRecord->loan : '',
+                        $confirmation->paymentRecord ? number_format($confirmation->paymentRecord->kiasi_baki, 2) : '0.00',
+                        $paymentMethodText,
+                        $confirmation->mobile_number ?? '',
+                        $confirmation->mobile_account_name ?? '',
+                        $confirmation->bank_name ?? '',
+                        $confirmation->transaction_id ?? '',
+                        $confirmation->status,
+                        $confirmation->created_at ? $confirmation->created_at->format('Y-m-d H:i:s') : 'N/A',
+                        $confirmation->updated_at ? $confirmation->updated_at->format('Y-m-d H:i:s') : 'N/A',
+                        $confirmation->notes ?? '',
+                        $confirmation->ip_address ?? '',
+                        $confirmation->user_agent ?? ''
+                    ]);
+                }
+            });
 
             fclose($file);
         };

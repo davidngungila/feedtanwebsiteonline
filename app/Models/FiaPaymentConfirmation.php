@@ -11,13 +11,17 @@ class FiaPaymentConfirmation extends Model
         'member_name',
         'member_type',
         'member_email',
+        'member_phone',
         'amount_to_pay',
         'notes',
         'status',
         'payment_method',
         'mobile_number',
         'mobile_account_name',
-        'bank_name'
+        'bank_name',
+        'transaction_id',
+        'ip_address',
+        'user_agent'
     ];
 
     protected $casts = [
