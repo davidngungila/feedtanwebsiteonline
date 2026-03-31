@@ -420,7 +420,11 @@ class FiaPaymentController extends Controller
         // Get all confirmations without pagination for complete export
         $query = FiaPaymentConfirmation::with('paymentRecord');
 
-        // Apply filters if specified, but get all records
+        // Apply same filters as dashboard for consistency
+        if ($request->filled('search')) {
+            $query->search($request->search);
+        }
+
         if ($request->filled('status')) {
             $query->byStatus($request->status);
         }
