@@ -400,7 +400,8 @@
                             @forelse($confirmations as $confirmation)
                                 @php
                                     // Skip duplicate entries based on member_id and created_at
-                                    $uniqueKey = $confirmation->member_id . '_' . $confirmation->created_at->format('Y-m-d_H-i-s');
+                                    $createdAt = $confirmation->created_at ? $confirmation->created_at->format('Y-m-d_H-i-s') : 'unknown';
+                                    $uniqueKey = $confirmation->member_id . '_' . $createdAt;
                                     if(isset($shownRecords) && in_array($uniqueKey, $shownRecords)) continue;
                                     $shownRecords[] = $uniqueKey;
                                 @endphp
@@ -408,7 +409,7 @@
                                     <td class="px-4 py-4 whitespace-nowrap">
                                         <div class="flex flex-col">
                                             <span class="text-sm font-medium text-gray-900 font-charon">#{{ str_pad($confirmation->id, 6, '0', STR_PAD_LEFT) }}</span>
-                                            <span class="text-xs text-gray-500">{{ $confirmation->created_at->format('H:i') }}</span>
+                                            <span class="text-xs text-gray-500">{{ $confirmation->created_at ? $confirmation->created_at->format('H:i') : 'N/A' }}</span>
                                         </div>
                                     </td>
                                     <td class="px-4 py-4 whitespace-nowrap">
@@ -485,8 +486,8 @@
                                     </td>
                                     <td class="px-4 py-4 whitespace-nowrap">
                                         <div class="text-sm text-gray-500">
-                                            <p>{{ $confirmation->created_at->format('M d, Y') }}</p>
-                                            <p class="text-xs">{{ $confirmation->created_at->format('H:i A') }}</p>
+                                            <p>{{ $confirmation->created_at ? $confirmation->created_at->format('M d, Y') : 'N/A' }}</p>
+                                            <p class="text-xs">{{ $confirmation->created_at ? $confirmation->created_at->format('H:i A') : 'N/A' }}</p>
                                         </div>
                                     </td>
                                     <td class="px-4 py-4 whitespace-nowrap text-sm font-medium">
