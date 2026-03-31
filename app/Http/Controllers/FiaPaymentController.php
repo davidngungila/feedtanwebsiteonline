@@ -413,115 +413,140 @@ class FiaPaymentController extends Controller
     // Export to CSV
     public function exportCsv(Request $request)
     {
-        if (!session('fia_admin_authenticated')) {
-            return redirect()->route('fia.admin.passcode');
-        }
+        try {
+            if (!session('fia_admin_authenticated')) {
+                return redirect()->route('fia.admin.passcode');
+            }
 
-        // Get all confirmations without pagination for complete export
-        $query = FiaPaymentConfirmation::with('paymentRecord');
+            // Enable error reporting
+            ini_set('memory_limit', '512M');
+            set_time_limit(300);
 
-        // Apply same filters as dashboard for consistency
-        if ($request->filled('search')) {
-            $query->search($request->search);
-        }
+            // Get all confirmations without pagination for complete export
+            $query = FiaPaymentConfirmation::with('paymentRecord');
 
-        if ($request->filled('status')) {
-            $query->byStatus($request->status);
-        }
+            // Apply same filters as dashboard for consistency
+            if ($request->filled('search')) {
+                $query->search($request->search);
+            }
 
-        // Use chunking to handle large datasets
-        $headers = [
-            'Content-Type' => 'text/csv; charset=utf-8',
-            'Content-Disposition' => 'attachment; filename="fia_payments_export_' . date('Y-m-d_H-i-s') . '.csv"',
-            'Cache-Control' => 'no-cache, must-revalidate',
-            'Pragma' => 'no-cache',
-        ];
+            if ($request->filled('status')) {
+                $query->byStatus($request->status);
+            }
 
-        $callback = function() use ($query) {
-            $file = fopen('php://output', 'w');
+            // Get total count for debugging
+            $totalCount = $query->count();
             
-            // Add BOM for proper UTF-8 encoding in Excel
-            fprintf($file, chr(0xEF).chr(0xBB).chr(0xBF));
-            
-            // Enhanced CSV Header with all available fields
-            fputcsv($file, [
-                'ID',
-                'Member ID',
-                'Member Name',
-                'Member Type',
-                'Email',
-                'Phone',
-                'Amount to Pay',
-                'Gawio la FIA',
-                'FIA Ilivyo Koma',
-                'Jumla',
-                'Malipo ya VIP',
-                'Loan',
-                'Kiasi Baki',
-                'Payment Method',
-                'Mobile Number',
-                'Mobile Account Name',
-                'Bank Name',
-                'Transaction ID',
-                'Status',
-                'Submission Date',
-                'Updated Date',
-                'Notes',
-                'IP Address',
-                'User Agent'
-            ]);
+            // Use chunking to handle large datasets
+            $headers = [
+                'Content-Type' => 'text/csv; charset=utf-8',
+                'Content-Disposition' => 'attachment; filename="fia_payments_export_' . date('Y-m-d_H-i-s') . '.csv"',
+                'Cache-Control' => 'no-cache, must-revalidate',
+                'Pragma' => 'no-cache',
+            ];
 
-            // Process data in chunks to handle large datasets
-            $query->orderBy('created_at', 'desc')->chunk(1000, function($confirmations) {
-                foreach ($confirmations as $confirmation) {
-                    $paymentMethodText = '';
-                    switch ($confirmation->payment_method) {
-                        case 'akiba':
-                            $paymentMethodText = 'Naweka Akiba';
-                            break;
-                        case 'cash_mobile':
-                            $paymentMethodText = 'CASH - Kwa Simu (Halopes/Mix By Yas)';
-                            break;
-                        case 'cash_bank':
-                            $paymentMethodText = 'CASH - Bank Transfer';
-                            break;
-                        default:
-                            $paymentMethodText = 'Unknown';
-                            break;
+            $callback = function() use ($query, $totalCount) {
+                $file = fopen('php://output', 'w');
+                
+                // Add BOM for proper UTF-8 encoding in Excel
+                fprintf($file, chr(0xEF).chr(0xBB).chr(0xBF));
+                
+                // Enhanced CSV Header with all available fields
+                fputcsv($file, [
+                    'ID',
+                    'Member ID',
+                    'Member Name',
+                    'Member Type',
+                    'Email',
+                    'Phone',
+                    'Amount to Pay',
+                    'Gawio la FIA',
+                    'FIA Ilivyo Koma',
+                    'Jumla',
+                    'Malipo ya VIP',
+                    'Loan',
+                    'Kiasi Baki',
+                    'Payment Method',
+                    'Mobile Number',
+                    'Mobile Account Name',
+                    'Bank Name',
+                    'Transaction ID',
+                    'Status',
+                    'Submission Date',
+                    'Updated Date',
+                    'Notes',
+                    'IP Address',
+                    'User Agent'
+                ]);
+
+                $processedCount = 0;
+                
+                // Process data in smaller chunks to handle large datasets
+                $query->orderBy('created_at', 'desc')->chunk(500, function($confirmations) use ($file, &$processedCount) {
+                    foreach ($confirmations as $confirmation) {
+                        $paymentMethodText = '';
+                        switch ($confirmation->payment_method) {
+                            case 'akiba':
+                                $paymentMethodText = 'Naweka Akiba';
+                                break;
+                            case 'cash_mobile':
+                                $paymentMethodText = 'CASH - Kwa Simu (Halopes/Mix By Yas)';
+                                break;
+                            case 'cash_bank':
+                                $paymentMethodText = 'CASH - Bank Transfer';
+                                break;
+                            default:
+                                $paymentMethodText = 'Unknown';
+                                break;
+                        }
+
+                        fputcsv($file, [
+                            $confirmation->id,
+                            $confirmation->member_id,
+                            $confirmation->member_name,
+                            $confirmation->member_type,
+                            $confirmation->member_email,
+                            $confirmation->member_phone ?? '',
+                            number_format($confirmation->amount_to_pay, 2),
+                            $confirmation->paymentRecord ? number_format($confirmation->paymentRecord->gawio_la_fia, 2) : '0.00',
+                            $confirmation->paymentRecord ? number_format($confirmation->paymentRecord->fia_iliyokomaa, 2) : '0.00',
+                            $confirmation->paymentRecord ? number_format($confirmation->paymentRecord->jumla, 2) : '0.00',
+                            $confirmation->paymentRecord ? number_format($confirmation->paymentRecord->malipo_vya_vipande ?: 0, 2) : '0.00',
+                            $confirmation->paymentRecord ? $confirmation->paymentRecord->loan : '',
+                            $confirmation->paymentRecord ? number_format($confirmation->paymentRecord->kiasi_baki, 2) : '0.00',
+                            $paymentMethodText,
+                            $confirmation->mobile_number ?? '',
+                            $confirmation->mobile_account_name ?? '',
+                            $confirmation->bank_name ?? '',
+                            $confirmation->transaction_id ?? '',
+                            $confirmation->status,
+                            $confirmation->created_at ? $confirmation->created_at->format('Y-m-d H:i:s') : 'N/A',
+                            $confirmation->updated_at ? $confirmation->updated_at->format('Y-m-d H:i:s') : 'N/A',
+                            $confirmation->notes ?? '',
+                            $confirmation->ip_address ?? '',
+                            $confirmation->user_agent ?? ''
+                        ]);
+                        
+                        $processedCount++;
                     }
+                    
+                    // Flush output to prevent timeouts
+                    if (ob_get_level()) {
+                        ob_flush();
+                    }
+                    flush();
+                });
 
-                    fputcsv($file, [
-                        $confirmation->id,
-                        $confirmation->member_id,
-                        $confirmation->member_name,
-                        $confirmation->member_type,
-                        $confirmation->member_email,
-                        $confirmation->member_phone ?? '',
-                        number_format($confirmation->amount_to_pay, 2),
-                        $confirmation->paymentRecord ? number_format($confirmation->paymentRecord->gawio_la_fia, 2) : '0.00',
-                        $confirmation->paymentRecord ? number_format($confirmation->paymentRecord->fia_iliyokomaa, 2) : '0.00',
-                        $confirmation->paymentRecord ? number_format($confirmation->paymentRecord->jumla, 2) : '0.00',
-                        $confirmation->paymentRecord ? number_format($confirmation->paymentRecord->malipo_vya_vipande ?: 0, 2) : '0.00',
-                        $confirmation->paymentRecord ? $confirmation->paymentRecord->loan : '',
-                        $confirmation->paymentRecord ? number_format($confirmation->paymentRecord->kiasi_baki, 2) : '0.00',
-                        $paymentMethodText,
-                        $confirmation->mobile_number ?? '',
-                        $confirmation->mobile_account_name ?? '',
-                        $confirmation->bank_name ?? '',
-                        $confirmation->transaction_id ?? '',
-                        $confirmation->status,
-                        $confirmation->created_at ? $confirmation->created_at->format('Y-m-d H:i:s') : 'N/A',
-                        $confirmation->updated_at ? $confirmation->updated_at->format('Y-m-d H:i:s') : 'N/A',
-                        $confirmation->notes ?? '',
-                        $confirmation->ip_address ?? '',
-                        $confirmation->user_agent ?? ''
-                    ]);
-                }
-            });
+                fclose($file);
+            };
 
-            fclose($file);
-        };
-
-        return new StreamedResponse($callback, 200, $headers);
+            return new StreamedResponse($callback, 200, $headers);
+            
+        } catch (\Exception $e) {
+            // Log error and return with error message
+            \Log::error('CSV Export Error: ' . $e->getMessage());
+            
+            return back()->with('error', 'Export failed: ' . $e->getMessage());
+        }
     }
 }
