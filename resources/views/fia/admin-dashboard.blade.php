@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FIA Admin Dashboard</title>
+    <title>Dodoso Admin Dashboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -180,11 +180,11 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.586-4L12 3l4 4m0 0l-4 4m4-4H7"></path>
                                 </svg>
                             </div>
-                            <h1 class="text-white text-xl font-manrope font-bold">FIA Admin Dashboard</h1>
+                            <h1 class="text-white text-xl font-manrope font-bold">Dodoso Admin Dashboard</h1>
                         </div>
                     </div>
                     <div class="flex items-center mobile-stack">
-                        <form action="{{ route('fia.admin.export') }}" method="GET" class="inline">
+                        <form action="{{ route('dodoso.admin.export') }}" method="GET" class="inline">
                             @if(request('status'))
                                 <input type="hidden" name="status" value="{{ request('status') }}">
                             @endif
@@ -198,7 +198,7 @@
                                 <span>Export CSV</span>
                             </button>
                         </form>
-                        <form action="{{ route('fia.admin.logout') }}" method="POST" class="inline">
+                        <form action="{{ route('dodoso.admin.logout') }}" method="POST" class="inline">
                             @csrf
                             <button type="submit" class="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center space-x-2 transition">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -233,7 +233,7 @@
             <!-- Page Header -->
             <div class="mb-8">
                 <h2 class="font-manrope text-3xl font-bold gradient-text mb-2">Payment Submissions Overview</h2>
-                <p class="font-lato text-gray-600">Manage and monitor all FIA payment submissions</p>
+                <p class="font-lato text-gray-600">Manage and monitor all Dodoso payment submissions</p>
             </div>
 
             <!-- Statistics Cards -->
@@ -339,7 +339,7 @@
 
             <!-- Search and Filter -->
             <div class="glass-effect rounded-xl p-6 mb-8">
-                <form method="GET" action="{{ route('fia.admin.dashboard') }}" class="space-y-4">
+                <form method="GET" action="{{ route('dodoso.admin.dashboard') }}" class="space-y-4">
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-2">Search</label>
@@ -495,7 +495,7 @@
                                     </td>
                                     <td class="px-4 py-4 whitespace-nowrap text-sm font-medium">
                                         <div class="flex items-center space-x-1">
-                                            <a href="{{ route('fia.admin.edit', $confirmation->id) }}" 
+                                            <a href="{{ route('dodoso.admin.edit', $confirmation->id) }}" 
                                                class="text-green-600 hover:text-green-900 p-1 hover:bg-green-50 rounded transition-colors" 
                                                title="Edit">
                                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -503,7 +503,7 @@
                                                 </svg>
                                             </a>
                                             @if($confirmation->status == 'pending')
-                                                <form action="{{ route('fia.admin.status', $confirmation->id) }}" method="POST" class="inline">
+                                                <form action="{{ route('dodoso.admin.status', $confirmation->id) }}" method="POST" class="inline">
                                                     @csrf
                                                     <button type="submit" name="status" value="verified" 
                                                             class="text-blue-600 hover:text-blue-900 p-1 hover:bg-blue-50 rounded transition-colors" 
@@ -514,7 +514,7 @@
                                                     </button>
                                                 </form>
                                             @elseif($confirmation->status == 'verified')
-                                                <form action="{{ route('fia.admin.status', $confirmation->id) }}" method="POST" class="inline">
+                                                <form action="{{ route('dodoso.admin.status', $confirmation->id) }}" method="POST" class="inline">
                                                     @csrf
                                                     <button type="submit" name="status" value="rejected" 
                                                             class="text-red-600 hover:text-red-900 p-1 hover:bg-red-50 rounded transition-colors" 
@@ -525,7 +525,7 @@
                                                     </button>
                                                 </form>
                                             @endif
-                                            <a href="{{ route('fia.confirmation', $confirmation->id) }}" 
+                                            <a href="{{ route('dodoso.confirmation', $confirmation->id) }}" 
                                                class="text-gray-600 hover:text-gray-900 p-1 hover:bg-gray-50 rounded transition-colors" 
                                                title="View">
                                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

@@ -383,6 +383,6 @@ class FiaPaymentSeeder extends Seeder
             );
         }
 
-        $this->command->info('FIA Payment data seeded successfully!');
+        $this->command->info('Dodoso Payment data seeded successfully!');
     }
 }

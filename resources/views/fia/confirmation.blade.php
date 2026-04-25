@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FIA Payment Confirmation - {{ $confirmation->member_name }}</title>
+    <title>Dodoso Confirmation - {{ $confirmation->member_name }}</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -173,7 +173,7 @@
                         </svg>
                     </div>
                     <h1 class="font-manrope text-4xl sm:text-5xl font-bold gradient-text mb-2">
-                        FIA Payment Confirmation
+                        Dodoso Confirmation
                     </h1>
                     <p class="font-lato text-xl text-gray-600">
                         Official Payment Receipt
@@ -436,7 +436,7 @@
                         <div class="ml-4 flex-1">
                             <h3 class="font-manrope text-lg font-semibold text-gray-900 mb-2">Payment Confirmation</h3>
                             <p class="text-gray-700 mb-3">
-                                This is to confirm that the above member has submitted their FIA payment details. The payment confirmation has been recorded in our system.
+                                This is to confirm that the above member has submitted their Dodoso payment details. The payment confirmation has been recorded in our system.
                             </p>
                             @if(!empty($confirmation->notes))
                             <div class="bg-gray-50 rounded-lg p-3">
@@ -494,7 +494,7 @@
                         </svg>
                         <span>Print Confirmation</span>
                     </button>
-                    <a href="{{ route('fia.member.verify') }}" class="px-8 py-3 border border-gray-300 text-gray-700 rounded-xl font-medium hover:bg-gray-50 transition duration-200 text-center flex items-center justify-center space-x-2">
+                    <a href="{{ route('dodoso.member.verify') }}" class="px-8 py-3 border border-gray-300 text-gray-700 rounded-xl font-medium hover:bg-gray-50 transition duration-200 text-center flex items-center justify-center space-x-2">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
                         </svg>

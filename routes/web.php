@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\FiaPaymentController;
+use App\Http\Controllers\CustomerDemandController;
+use App\Http\Controllers\FeedtanSurveyController;
 
 /*
 |--------------------------------------------------------------------------
@@ -63,24 +65,35 @@ Route::get('/documents', function () {
     return view('documents');
 });
 
-// FIA Payment Routes (Public Access)
-Route::prefix('fia')->name('fia.')->group(function () {
-    // Member routes
-    Route::get('/verify', [FiaPaymentController::class, 'memberVerify'])->name('member.verify');
-    Route::post('/verify', [FiaPaymentController::class, 'memberVerifyProcess'])->name('member.verify.process');
-    Route::post('/submit', [FiaPaymentController::class, 'submitPayment'])->name('submit');
-    Route::get('/confirmation/{id}', [FiaPaymentController::class, 'confirmation'])->name('confirmation');
-    Route::get('/confirmation/{id}/pdf', [FiaPaymentController::class, 'confirmationPdf'])->name('confirmation.pdf');
+// Dodoso Routes (Main Feedtan Survey + Payment System)
+Route::prefix('dodoso')->name('dodoso.')->group(function () {
+    // Main Feedtan Survey routes
+    Route::get('/', [FeedtanSurveyController::class, 'index'])->name('survey.index');
+    Route::get('/create', [FeedtanSurveyController::class, 'create'])->name('survey.create');
+    Route::post('/store', [FeedtanSurveyController::class, 'store'])->name('survey.store');
+    Route::get('/shukrani', [FeedtanSurveyController::class, 'thankyou'])->name('survey.thankyou');
     
-    // Admin routes (with passcode protection)
-    Route::get('/admin', [FiaPaymentController::class, 'adminPasscode'])->name('admin.passcode');
-    Route::post('/admin', [FiaPaymentController::class, 'adminPasscodeProcess'])->name('admin.passcode.process');
-    Route::get('/admin/dashboard', [FiaPaymentController::class, 'adminDashboard'])->name('admin.dashboard');
-    Route::get('/admin/edit/{id}', [FiaPaymentController::class, 'editPayment'])->name('admin.edit');
-    Route::post('/admin/update/{id}', [FiaPaymentController::class, 'updatePayment'])->name('admin.update');
-    Route::post('/admin/status/{id}', [FiaPaymentController::class, 'updateStatus'])->name('admin.status');
-    Route::get('/admin/export', [FiaPaymentController::class, 'exportCsv'])->name('admin.export');
-    Route::post('/admin/logout', [FiaPaymentController::class, 'adminLogout'])->name('admin.logout');
+    // Survey admin routes
+    Route::get('/admin', [FeedtanSurveyController::class, 'admin'])->name('survey.admin');
+    Route::get('/export', [FeedtanSurveyController::class, 'export'])->name('survey.export');
+    
+    // Payment routes (sub-routes)
+    Route::get('/payment', [FiaPaymentController::class, 'publicForm'])->name('payment.form');
+    Route::get('/payment/verify', [FiaPaymentController::class, 'memberVerify'])->name('payment.member.verify');
+    Route::post('/payment/verify', [FiaPaymentController::class, 'memberVerifyProcess'])->name('payment.member.verify.process');
+    Route::post('/payment/submit', [FiaPaymentController::class, 'submitPayment'])->name('payment.submit');
+    Route::get('/payment/confirmation/{id}', [FiaPaymentController::class, 'confirmation'])->name('payment.confirmation');
+    Route::get('/payment/confirmation/{id}/pdf', [FiaPaymentController::class, 'confirmationPdf'])->name('payment.confirmation.pdf');
+    
+    // Payment admin routes (with passcode protection)
+    Route::get('/payment/admin', [FiaPaymentController::class, 'adminPasscode'])->name('payment.admin.passcode');
+    Route::post('/payment/admin', [FiaPaymentController::class, 'adminPasscodeProcess'])->name('payment.admin.passcode.process');
+    Route::get('/payment/admin/dashboard', [FiaPaymentController::class, 'adminDashboard'])->name('payment.admin.dashboard');
+    Route::get('/payment/admin/edit/{id}', [FiaPaymentController::class, 'editPayment'])->name('payment.admin.edit');
+    Route::post('/payment/admin/update/{id}', [FiaPaymentController::class, 'updatePayment'])->name('payment.admin.update');
+    Route::post('/payment/admin/status/{id}', [FiaPaymentController::class, 'updateStatus'])->name('payment.admin.status');
+    Route::get('/payment/admin/export', [FiaPaymentController::class, 'exportCsv'])->name('payment.admin.export');
+    Route::post('/payment/admin/logout', [FiaPaymentController::class, 'adminLogout'])->name('payment.admin.logout');
 });
 
 // Admin Routes with organized folder structure and live database
@@ -109,4 +122,27 @@ Route::prefix('admin')->group(function () {
     Route::get('/security', [AdminController::class, 'security'])->name('admin.security');
     Route::get('/notifications', [AdminController::class, 'notifications'])->name('admin.notifications');
     Route::get('/audit', [AdminController::class, 'audit'])->name('admin.audit');
+});
+
+// Customer Demand Assessment Routes
+Route::prefix('customer-demand')->name('customer-demand.')->group(function () {
+    Route::get('/', [CustomerDemandController::class, 'index'])->name('index');
+    Route::get('/create', [CustomerDemandController::class, 'create'])->name('create');
+    Route::post('/store', [CustomerDemandController::class, 'store'])->name('store');
+    Route::get('/thankyou', [CustomerDemandController::class, 'thankyou'])->name('thankyou');
+    Route::get('/admin', [CustomerDemandController::class, 'admin'])->name('admin');
+    Route::get('/export', [CustomerDemandController::class, 'export'])->name('export');
+});
+
+// Feedtan Mini Supermarket Survey Routes - Integrated with Dodoso
+Route::prefix('dodoso')->name('dodoso.')->group(function () {
+    // Public survey routes
+    Route::get('/survey', [FeedtanSurveyController::class, 'index'])->name('survey.index');
+    Route::get('/survey/create', [FeedtanSurveyController::class, 'create'])->name('survey.create');
+    Route::post('/survey/store', [FeedtanSurveyController::class, 'store'])->name('survey.store');
+    Route::get('/survey/shukrani', [FeedtanSurveyController::class, 'thankyou'])->name('survey.thankyou');
+    
+    // Admin survey routes
+    Route::get('/survey/admin', [FeedtanSurveyController::class, 'admin'])->name('survey.admin');
+    Route::get('/survey/export', [FeedtanSurveyController::class, 'export'])->name('survey.export');
 });

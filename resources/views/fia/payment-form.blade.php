@@ -160,7 +160,7 @@
                         </svg>
                     </div>
                     <h1 class="font-manrope text-3xl sm:text-4xl font-bold gradient-text mb-4">
-                        FIA Payment Verification Form
+                        Dodoso Payment Verification Form
                     </h1>
                     <p class="font-lato text-lg text-gray-600">
                         Please verify and submit your payment details
@@ -245,7 +245,7 @@
                 </div>
 
                 <!-- Payment Form -->
-                <form action="{{ route('fia.submit') }}" method="POST" class="space-y-8">
+                <form action="{{ route('dodoso.submit') }}" method="POST" class="space-y-8">
                     @csrf
                     <input type="hidden" name="member_id" value="{{ $memberId }}">
                     <input type="hidden" name="member_name" value="{{ $member['name'] }}">
@@ -638,7 +638,7 @@
 
                     <!-- Form Actions -->
                     <div class="flex flex-col sm:flex-row justify-end space-y-3 sm:space-y-0 sm:space-x-4">
-                        <a href="{{ route('fia.member.verify') }}" 
+                        <a href="{{ route('dodoso.member.verify') }}" 
                            class="px-6 py-3 border border-gray-300 text-gray-700 rounded-xl font-medium hover:bg-gray-50 transition duration-200 text-center">
                             Cancel
                         </a>

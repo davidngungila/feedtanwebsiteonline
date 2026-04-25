@@ -53,7 +53,7 @@
                 </div>
             @endif
 
-            <form class="mt-8 space-y-6" action="{{ route('fia.admin.passcode.process') }}" method="POST">
+            <form class="mt-8 space-y-6" action="{{ route('dodoso.admin.passcode.process') }}" method="POST">
                 @csrf
                 <div class="rounded-md shadow-sm -space-y-px">
                     <div>
@@ -95,7 +95,7 @@
                 </div>
 
                 <div class="mt-6 text-center">
-                    <a href="{{ route('fia.member.verify') }}" class="font-medium text-green-600 hover:text-green-500">
+                    <a href="{{ route('dodoso.member.verify') }}" class="font-medium text-green-600 hover:text-green-500">
                         Member Verification
                     </a>
                 </div>

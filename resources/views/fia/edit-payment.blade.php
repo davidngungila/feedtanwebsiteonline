@@ -42,7 +42,7 @@
             </div>
 
             <!-- Edit Form -->
-            <form action="{{ route('fia.admin.update', $confirmation->id) }}" method="POST" class="space-y-6">
+            <form action="{{ route('dodoso.admin.update', $confirmation->id) }}" method="POST" class="space-y-6">
                 @csrf
                 <div class="bg-white shadow overflow-hidden sm:rounded-lg">
                     <div class="px-4 py-5 sm:px-6">
@@ -137,7 +137,7 @@
 
                 <!-- Action buttons -->
                 <div class="flex justify-end">
-                    <a href="{{ route('fia.admin.dashboard') }}" class="bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
+                    <a href="{{ route('dodoso.admin.dashboard') }}" class="bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
                         Cancel
                     </a>
                     <button type="submit" class="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">

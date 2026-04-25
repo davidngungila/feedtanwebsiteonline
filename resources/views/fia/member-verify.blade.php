@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FIA Payment Verification</title>
+    <title>Dodoso Verification</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -154,7 +154,7 @@
                     </svg>
                 </div>
                 <h1 class="font-manrope text-4xl sm:text-5xl font-bold gradient-text mb-4">
-                    FIA Payment Verification
+                    Dodoso Verification
                 </h1>
                 <p class="font-lato text-lg text-gray-600 max-w-2xl mx-auto">
                     Enter your Member ID to verify your payment details and manage your account securely
@@ -179,7 +179,7 @@
 
             <!-- Main Card -->
             <div class="glass-effect rounded-2xl p-8 sm:p-12 card-shadow hover-scale">
-                <form class="space-y-8" action="{{ route('fia.member.verify.process') }}" method="POST">
+                <form class="space-y-8" action="{{ route('dodoso.member.verify.process') }}" method="POST">
                     @csrf
                     
                     <!-- Input Section -->
@@ -232,7 +232,7 @@
                             <span class="text-sm text-gray-600 font-lato">Secure Verification System</span>
                         </div>
                         <div class="text-sm text-gray-500 font-lato">
-                            Powered by FIA Payment Platform
+                            Powered by Dodoso Platform
                         </div>
                     </div>
                 </div>

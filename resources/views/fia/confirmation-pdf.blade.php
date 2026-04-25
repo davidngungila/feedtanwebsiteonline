@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>FIA Payment Confirmation - {{ $confirmation->id }}</title>
+    <title>Dodoso Confirmation - {{ $confirmation->id }}</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -70,7 +70,7 @@
 </head>
 <body>
     <div class="header">
-        <h1>FIA PAYMENT CONFIRMATION</h1>
+        <h1>DODOSO CONFIRMATION</h1>
         <p>Confirmation ID: #{{ $confirmation->id }}</p>
     </div>
 
@@ -135,9 +135,9 @@
     @endif
 
     <div class="footer">
-        <p>This is an official payment confirmation from FIA System.</p>
+        <p>This is an official payment confirmation from Dodoso System.</p>
         <p>Generated on: {{ now()->format('d M Y, H:i:s') }}</p>
-        <p>For any inquiries, please contact FIA Administration.</p>
+        <p>For any inquiries, please contact Dodoso Administration.</p>
     </div>
 </body>
 </html>

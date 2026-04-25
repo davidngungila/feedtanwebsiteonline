@@ -10,6 +10,22 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class FiaPaymentController extends Controller
 {
+    // Public payment form - anyone can access
+    public function publicForm()
+    {
+        // Create a default member structure for public access
+        $member = [
+            'name' => 'Public User',
+            'type' => 'PUBLIC',
+            'email' => 'public@example.com'
+        ];
+        
+        $memberId = 'PUBLIC_' . date('YmdHis');
+        $paymentRecord = null;
+        
+        return view('fia.public-form', compact('member', 'memberId', 'paymentRecord'));
+    }
+
     // Member verification page
     public function memberVerify()
     {
