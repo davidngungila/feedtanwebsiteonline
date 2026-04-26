@@ -153,7 +153,7 @@ class FeedtanSurveyController extends Controller
         $categories = array_keys(FeedtanSurvey::$productCategories);
         
         foreach ($categories as $category) {
-            $stats[$category] = FeedtanSurvey::whereJsonContains('frequently_purchased_products', $category)->count();
+            $stats[$category] = FeedtanSurvey::where('frequently_purchased_products', 'like', '%"' . $category . '"%')->count();
         }
         
         return $stats;
