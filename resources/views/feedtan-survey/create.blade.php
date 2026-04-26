@@ -523,7 +523,6 @@
 
     <script>
         // Product row management
-        let productRowCount = 5; // Start with 5 existing rows
         
         function addProductRow() {
             console.log('addProductRow called');
@@ -535,13 +534,14 @@
                 return;
             }
             
+            const currentRows = document.querySelectorAll('.survey-table-row');
+            const rowIndex = currentRows.length;
+            const rowNumber = currentRows.length + 1;
+            console.log('Adding row with index:', rowIndex, 'and number:', rowNumber);
+            
             const newRow = document.createElement('tr');
             newRow.className = 'survey-table-row';
-            newRow.setAttribute('data-row-index', productRowCount + 1);
-            
-            const rowIndex = productRowCount;
-            const rowNumber = productRowCount + 1;
-            console.log('Adding row with index:', rowIndex, 'and number:', rowNumber);
+            newRow.setAttribute('data-row-index', rowNumber);
             
             newRow.innerHTML = `
                 <td class="border border-gray-300 px-4 py-3 text-center">${rowNumber}</td>
@@ -574,7 +574,6 @@
             `;
             
             tableBody.appendChild(newRow);
-            productRowCount++;
             
             // Update row numbers
             updateRowNumbers();
@@ -593,7 +592,6 @@
                 if (rowToRemove) {
                     rowToRemove.remove();
                     updateRowNumbers();
-                    productRowCount--; // Decrease the count when removing a row
                     console.log('Row removed successfully');
                 } else {
                     console.error('Row not found with data-row-index:', index + 1);
@@ -611,12 +609,18 @@
         
         function updateRowNumbers() {
             const rows = document.querySelectorAll('.survey-table-row');
+            console.log('Updating row numbers for', rows.length, 'rows');
             rows.forEach((row, index) => {
                 const firstCell = row.querySelector('td:first-child');
                 if (firstCell) {
                     firstCell.textContent = index + 1;
                 }
                 row.setAttribute('data-row-index', index + 1);
+                // Update the remove button onclick to use the new index
+                const removeButton = row.querySelector('button[onclick^="removeProductRow"]');
+                if (removeButton) {
+                    removeButton.setAttribute('onclick', `removeProductRow(${index})`);
+                }
             });
         }
 
