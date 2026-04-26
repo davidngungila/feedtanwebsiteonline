@@ -401,7 +401,7 @@
                         <!-- Mobile View - Card Layout -->
                         <div class="lg:hidden space-y-6" id="mobileProductCards">
                             <!-- Product 1 -->
-                            <div class="bg-white rounded-lg border border-gray-200 p-4 shadow-sm" data-row-index="0">
+                            <div class="bg-white rounded-lg border border-gray-200 p-4 shadow-sm mobile-product-card" data-row-index="0">
                                 <div class="mb-4">
                                     <div class="flex items-center justify-between mb-3">
                                         <span class="bg-green-100 text-green-800 text-sm font-medium px-3 py-1 rounded-full">Bidhaa #1</span>
@@ -432,6 +432,162 @@
                                         <div>
                                             <label class="block text-sm font-medium text-gray-700 mb-1">Mapendekezo yako</label>
                                             <input type="text" name="survey_table_data[0][suggestions]" 
+                                                   class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:border-green-500 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50"
+                                                   placeholder="Mapendekezo yako">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Product 2 -->
+                            <div class="bg-white rounded-lg border border-gray-200 p-4 shadow-sm mobile-product-card" data-row-index="1">
+                                <div class="mb-4">
+                                    <div class="flex items-center justify-between mb-3">
+                                        <span class="bg-green-100 text-green-800 text-sm font-medium px-3 py-1 rounded-full">Bidhaa #2</span>
+                                        <button type="button" onclick="removeProductRow(1)" 
+                                                class="text-red-500 hover:text-red-700 text-sm font-medium">
+                                                    Ondoa
+                                        </button>
+                                    </div>
+                                    <div class="space-y-3">
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700 mb-1">Jina la Bidhaa</label>
+                                            <input type="text" name="survey_table_data[1][product]" 
+                                                   class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:border-green-500 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50"
+                                                   placeholder="Andika bidhaa">
+                                        </div>
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700 mb-1">Unanunua mara ngapi kwa wiki</label>
+                                            <input type="text" name="survey_table_data[1][frequency_per_week]" 
+                                                   class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:border-green-500 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50"
+                                                   placeholder="mf: 2-3">
+                                        </div>
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700 mb-1">Kila ukinunua, unanua kiasi gani?</label>
+                                            <input type="text" name="survey_table_data[1][quantity_per_purchase]" 
+                                                   class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:border-green-500 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50"
+                                                   placeholder="mf: 1 kg, 2 viti">
+                                        </div>
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700 mb-1">Mapendekezo yako</label>
+                                            <input type="text" name="survey_table_data[1][suggestions]" 
+                                                   class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:border-green-500 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50"
+                                                   placeholder="Mapendekezo yako">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Product 3 -->
+                            <div class="bg-white rounded-lg border border-gray-200 p-4 shadow-sm mobile-product-card" data-row-index="2">
+                                <div class="mb-4">
+                                    <div class="flex items-center justify-between mb-3">
+                                        <span class="bg-green-100 text-green-800 text-sm font-medium px-3 py-1 rounded-full">Bidhaa #3</span>
+                                        <button type="button" onclick="removeProductRow(2)" 
+                                                class="text-red-500 hover:text-red-700 text-sm font-medium">
+                                                    Ondoa
+                                        </button>
+                                    </div>
+                                    <div class="space-y-3">
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700 mb-1">Jina la Bidhaa</label>
+                                            <input type="text" name="survey_table_data[2][product]" 
+                                                   class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:border-green-500 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50"
+                                                   placeholder="Andika bidhaa">
+                                        </div>
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700 mb-1">Unanunua mara ngapi kwa wiki</label>
+                                            <input type="text" name="survey_table_data[2][frequency_per_week]" 
+                                                   class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:border-green-500 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50"
+                                                   placeholder="mf: 2-3">
+                                        </div>
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700 mb-1">Kila ukinunua, unanua kiasi gani?</label>
+                                            <input type="text" name="survey_table_data[2][quantity_per_purchase]" 
+                                                   class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:border-green-500 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50"
+                                                   placeholder="mf: 1 kg, 2 viti">
+                                        </div>
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700 mb-1">Mapendekezo yako</label>
+                                            <input type="text" name="survey_table_data[2][suggestions]" 
+                                                   class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:border-green-500 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50"
+                                                   placeholder="Mapendekezo yako">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Product 4 -->
+                            <div class="bg-white rounded-lg border border-gray-200 p-4 shadow-sm mobile-product-card" data-row-index="3">
+                                <div class="mb-4">
+                                    <div class="flex items-center justify-between mb-3">
+                                        <span class="bg-green-100 text-green-800 text-sm font-medium px-3 py-1 rounded-full">Bidhaa #4</span>
+                                        <button type="button" onclick="removeProductRow(3)" 
+                                                class="text-red-500 hover:text-red-700 text-sm font-medium">
+                                                    Ondoa
+                                        </button>
+                                    </div>
+                                    <div class="space-y-3">
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700 mb-1">Jina la Bidhaa</label>
+                                            <input type="text" name="survey_table_data[3][product]" 
+                                                   class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:border-green-500 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50"
+                                                   placeholder="Andika bidhaa">
+                                        </div>
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700 mb-1">Unanunua mara ngapi kwa wiki</label>
+                                            <input type="text" name="survey_table_data[3][frequency_per_week]" 
+                                                   class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:border-green-500 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50"
+                                                   placeholder="mf: 2-3">
+                                        </div>
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700 mb-1">Kila ukinunua, unanua kiasi gani?</label>
+                                            <input type="text" name="survey_table_data[3][quantity_per_purchase]" 
+                                                   class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:border-green-500 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50"
+                                                   placeholder="mf: 1 kg, 2 viti">
+                                        </div>
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700 mb-1">Mapendekezo yako</label>
+                                            <input type="text" name="survey_table_data[3][suggestions]" 
+                                                   class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:border-green-500 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50"
+                                                   placeholder="Mapendekezo yako">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Product 5 -->
+                            <div class="bg-white rounded-lg border border-gray-200 p-4 shadow-sm mobile-product-card" data-row-index="4">
+                                <div class="mb-4">
+                                    <div class="flex items-center justify-between mb-3">
+                                        <span class="bg-green-100 text-green-800 text-sm font-medium px-3 py-1 rounded-full">Bidhaa #5</span>
+                                        <button type="button" onclick="removeProductRow(4)" 
+                                                class="text-red-500 hover:text-red-700 text-sm font-medium">
+                                                    Ondoa
+                                        </button>
+                                    </div>
+                                    <div class="space-y-3">
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700 mb-1">Jina la Bidhaa</label>
+                                            <input type="text" name="survey_table_data[4][product]" 
+                                                   class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:border-green-500 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50"
+                                                   placeholder="Andika bidhaa">
+                                        </div>
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700 mb-1">Unanunua mara ngapi kwa wiki</label>
+                                            <input type="text" name="survey_table_data[4][frequency_per_week]" 
+                                                   class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:border-green-500 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50"
+                                                   placeholder="mf: 2-3">
+                                        </div>
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700 mb-1">Kila ukinunua, unanua kiasi gani?</label>
+                                            <input type="text" name="survey_table_data[4][quantity_per_purchase]" 
+                                                   class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:border-green-500 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50"
+                                                   placeholder="mf: 1 kg, 2 viti">
+                                        </div>
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700 mb-1">Mapendekezo yako</label>
+                                            <input type="text" name="survey_table_data[4][suggestions]" 
                                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:border-green-500 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50"
                                                    placeholder="Mapendekezo yako">
                                         </div>
@@ -526,54 +682,104 @@
         
         function addProductRow() {
             console.log('addProductRow called');
+            
+            // Handle both desktop and mobile views
             const tableBody = document.getElementById('surveyTableBody');
-            console.log('Table body found:', tableBody);
+            const mobileCards = document.getElementById('mobileProductCards');
             
-            if (!tableBody) {
-                console.error('Table body not found!');
-                return;
-            }
+            const currentTableRows = document.querySelectorAll('.survey-table-row');
+            const currentMobileCards = document.querySelectorAll('.mobile-product-card');
+            const totalRows = currentTableRows.length;
+            const rowIndex = totalRows;
+            const rowNumber = totalRows + 1;
             
-            const currentRows = document.querySelectorAll('.survey-table-row');
-            const rowIndex = currentRows.length;
-            const rowNumber = currentRows.length + 1;
             console.log('Adding row with index:', rowIndex, 'and number:', rowNumber);
             
-            const newRow = document.createElement('tr');
-            newRow.className = 'survey-table-row';
-            newRow.setAttribute('data-row-index', rowNumber);
+            // Add to desktop table
+            if (tableBody) {
+                const newRow = document.createElement('tr');
+                newRow.className = 'survey-table-row';
+                newRow.setAttribute('data-row-index', rowNumber);
+                
+                newRow.innerHTML = `
+                    <td class="border border-gray-300 px-4 py-3 text-center">${rowNumber}</td>
+                    <td class="border border-gray-300 px-4 py-3">
+                        <input type="text" name="survey_table_data[${rowIndex}][product]" 
+                               class="w-full px-3 py-2 border border-gray-200 rounded focus:border-green-500 focus:outline-none"
+                               placeholder="Andika bidhaa">
+                    </td>
+                    <td class="border border-gray-300 px-4 py-3">
+                        <input type="text" name="survey_table_data[${rowIndex}][frequency_per_week]" 
+                               class="w-full px-3 py-2 border border-gray-200 rounded focus:border-green-500 focus:outline-none"
+                               placeholder="mf: 2-3">
+                    </td>
+                    <td class="border border-gray-300 px-4 py-3">
+                        <input type="text" name="survey_table_data[${rowIndex}][quantity_per_purchase]" 
+                               class="w-full px-3 py-2 border border-gray-200 rounded focus:border-green-500 focus:outline-none"
+                               placeholder="mf: 1 kg, 2 viti">
+                    </td>
+                    <td class="border border-gray-300 px-4 py-3">
+                        <input type="text" name="survey_table_data[${rowIndex}][suggestions]" 
+                               class="w-full px-3 py-2 border border-gray-200 rounded focus:border-green-500 focus:outline-none"
+                               placeholder="Mapendekezo yako">
+                    </td>
+                    <td class="border border-gray-300 px-4 py-3 text-center">
+                        <button type="button" onclick="removeProductRow(${rowIndex})" 
+                                class="text-red-500 hover:text-red-700 text-sm font-medium">
+                            Ondoa
+                        </button>
+                    </td>
+                `;
+                
+                tableBody.appendChild(newRow);
+            }
             
-            newRow.innerHTML = `
-                <td class="border border-gray-300 px-4 py-3 text-center">${rowNumber}</td>
-                <td class="border border-gray-300 px-4 py-3">
-                    <input type="text" name="survey_table_data[${rowIndex}][product]" 
-                           class="w-full px-3 py-2 border border-gray-200 rounded focus:border-green-500 focus:outline-none"
-                           placeholder="Andika bidhaa">
-                </td>
-                <td class="border border-gray-300 px-4 py-3">
-                    <input type="text" name="survey_table_data[${rowIndex}][frequency_per_week]" 
-                           class="w-full px-3 py-2 border border-gray-200 rounded focus:border-green-500 focus:outline-none"
-                           placeholder="mf: 2-3">
-                </td>
-                <td class="border border-gray-300 px-4 py-3">
-                    <input type="text" name="survey_table_data[${rowIndex}][quantity_per_purchase]" 
-                           class="w-full px-3 py-2 border border-gray-200 rounded focus:border-green-500 focus:outline-none"
-                           placeholder="mf: 1 kg, 2 viti">
-                </td>
-                <td class="border border-gray-300 px-4 py-3">
-                    <input type="text" name="survey_table_data[${rowIndex}][suggestions]" 
-                           class="w-full px-3 py-2 border border-gray-200 rounded focus:border-green-500 focus:outline-none"
-                           placeholder="Mapendekezo yako">
-                </td>
-                <td class="border border-gray-300 px-4 py-3 text-center">
-                    <button type="button" onclick="removeProductRow(${rowIndex})" 
-                            class="text-red-500 hover:text-red-700 text-sm font-medium">
-                        Ondoa
-                    </button>
-                </td>
-            `;
-            
-            tableBody.appendChild(newRow);
+            // Add to mobile cards
+            if (mobileCards) {
+                const newCard = document.createElement('div');
+                newCard.className = 'bg-white rounded-lg border border-gray-200 p-4 shadow-sm mobile-product-card';
+                newCard.setAttribute('data-row-index', rowIndex);
+                
+                newCard.innerHTML = `
+                    <div class="mb-4">
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="bg-green-100 text-green-800 text-sm font-medium px-3 py-1 rounded-full">Bidhaa #${rowNumber}</span>
+                            <button type="button" onclick="removeProductRow(${rowIndex})" 
+                                    class="text-red-500 hover:text-red-700 text-sm font-medium">
+                                        Ondoa
+                            </button>
+                        </div>
+                        <div class="space-y-3">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Jina la Bidhaa</label>
+                                <input type="text" name="survey_table_data[${rowIndex}][product]" 
+                                       class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:border-green-500 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50"
+                                       placeholder="Andika bidhaa">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Unanunua mara ngapi kwa wiki</label>
+                                <input type="text" name="survey_table_data[${rowIndex}][frequency_per_week]" 
+                                       class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:border-green-500 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50"
+                                       placeholder="mf: 2-3">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Kila ukinunua, unanua kiasi gani?</label>
+                                <input type="text" name="survey_table_data[${rowIndex}][quantity_per_purchase]" 
+                                       class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:border-green-500 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50"
+                                       placeholder="mf: 1 kg, 2 viti">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Mapendekezo yako</label>
+                                <input type="text" name="survey_table_data[${rowIndex}][suggestions]" 
+                                       class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:border-green-500 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50"
+                                       placeholder="Mapendekezo yako">
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                mobileCards.appendChild(newCard);
+            }
             
             // Update row numbers
             updateRowNumbers();
@@ -581,21 +787,34 @@
         
         function removeProductRow(index) {
             console.log('removeProductRow called with index:', index);
-            const rows = document.querySelectorAll('.survey-table-row');
-            console.log('Found rows:', rows.length);
+            const tableRows = document.querySelectorAll('.survey-table-row');
+            const mobileCards = document.querySelectorAll('.mobile-product-card');
+            const totalRows = tableRows.length;
             
-            if (rows.length > 1) { // Keep at least one row
-                const rowToRemove = document.querySelector(`[data-row-index="${index + 1}"]`);
-                console.log('Looking for row with data-row-index:', index + 1);
-                console.log('Row to remove found:', rowToRemove);
+            console.log('Found table rows:', totalRows, 'mobile cards:', mobileCards.length);
+            
+            if (totalRows > 1) { // Keep at least one row
+                // Remove from desktop table
+                const tableRowToRemove = document.querySelector(`.survey-table-row[data-row-index="${index + 1}"]`);
+                console.log('Looking for table row with data-row-index:', index + 1);
+                console.log('Table row to remove found:', tableRowToRemove);
                 
-                if (rowToRemove) {
-                    rowToRemove.remove();
-                    updateRowNumbers();
-                    console.log('Row removed successfully');
-                } else {
-                    console.error('Row not found with data-row-index:', index + 1);
+                if (tableRowToRemove) {
+                    tableRowToRemove.remove();
+                    console.log('Table row removed successfully');
                 }
+                
+                // Remove from mobile cards
+                const mobileCardToRemove = document.querySelector(`.mobile-product-card[data-row-index="${index}"]`);
+                console.log('Looking for mobile card with data-row-index:', index);
+                console.log('Mobile card to remove found:', mobileCardToRemove);
+                
+                if (mobileCardToRemove) {
+                    mobileCardToRemove.remove();
+                    console.log('Mobile card removed successfully');
+                }
+                
+                updateRowNumbers();
             } else {
                 console.log('Cannot remove last row');
                 Swal.fire({
@@ -608,16 +827,34 @@
         }
         
         function updateRowNumbers() {
-            const rows = document.querySelectorAll('.survey-table-row');
-            console.log('Updating row numbers for', rows.length, 'rows');
-            rows.forEach((row, index) => {
+            const tableRows = document.querySelectorAll('.survey-table-row');
+            const mobileCards = document.querySelectorAll('.mobile-product-card');
+            
+            console.log('Updating row numbers for', tableRows.length, 'table rows and', mobileCards.length, 'mobile cards');
+            
+            // Update desktop table rows
+            tableRows.forEach((row, index) => {
                 const firstCell = row.querySelector('td:first-child');
                 if (firstCell) {
                     firstCell.textContent = index + 1;
                 }
                 row.setAttribute('data-row-index', index + 1);
-                // Update the remove button onclick to use the new index
+                // Update remove button onclick to use new index
                 const removeButton = row.querySelector('button[onclick^="removeProductRow"]');
+                if (removeButton) {
+                    removeButton.setAttribute('onclick', `removeProductRow(${index})`);
+                }
+            });
+            
+            // Update mobile cards
+            mobileCards.forEach((card, index) => {
+                const badgeSpan = card.querySelector('span');
+                if (badgeSpan) {
+                    badgeSpan.textContent = `Bidhaa #${index + 1}`;
+                }
+                card.setAttribute('data-row-index', index);
+                // Update remove button onclick to use new index
+                const removeButton = card.querySelector('button[onclick^="removeProductRow"]');
                 if (removeButton) {
                     removeButton.setAttribute('onclick', `removeProductRow(${index})`);
                 }
