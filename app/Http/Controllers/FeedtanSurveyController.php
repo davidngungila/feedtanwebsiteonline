@@ -39,6 +39,14 @@ class FeedtanSurveyController extends Controller
         ]);
 
         if ($validator->fails()) {
+            if ($request->expectsJson()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Tafadhali hakikisha umefanya sehemu zote zinazohitajika.',
+                    'errors' => $validator->errors()
+                ], 422);
+            }
+            
             return redirect()->back()
                 ->withErrors($validator)
                 ->withInput();
@@ -55,6 +63,13 @@ class FeedtanSurveyController extends Controller
         }
 
         $survey = FeedtanSurvey::create($surveyData);
+
+        if ($request->expectsJson()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Asante kwa kujibu survey! Jibu lako litatusaidia kuboresha huduma zetu.'
+            ]);
+        }
 
         return redirect()->route('dodoso.survey.thankyou')
             ->with('success', 'Asante kwa kujibu survey! Jibu lako litatusaidia kuboresha huduma zetu.');

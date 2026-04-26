@@ -624,14 +624,15 @@
             });
         }
 
-        // Form validation
+        // Form submission with AJAX
         document.querySelector('form').addEventListener('submit', function(e) {
+            e.preventDefault(); // Prevent normal form submission
+            
             // Check if at least one frequently purchased product is selected
             const checkboxes = document.querySelectorAll('input[name="frequently_purchased_products[]"]:checked');
             const otherInput = document.querySelector('input[name="frequently_purchased_products_other"]').value.trim();
             
             if (checkboxes.length === 0 && !otherInput) {
-                e.preventDefault();
                 Swal.fire({
                     icon: 'warning',
                     title: 'Bidhaa Zinazohitajika',
@@ -644,7 +645,6 @@
             // Check if delivery service is selected
             const deliveryOptions = document.querySelectorAll('input[name="wants_delivery_service"]:checked');
             if (deliveryOptions.length === 0) {
-                e.preventDefault();
                 Swal.fire({
                     icon: 'warning',
                     title: 'Huduma ya Delivery',
@@ -653,6 +653,73 @@
                 });
                 return;
             }
+            
+            // Show loading state
+            Swal.fire({
+                title: 'Inatuma...',
+                text: 'Tafadhali subiri while tunatuma dodoso lako.',
+                allowOutsideClick: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                }
+            });
+            
+            // Submit form via AJAX
+            const formData = new FormData(this);
+            const formAction = this.action;
+            
+            fetch(formAction, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                    'Accept': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Show success popup
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Asante Sana!',
+                        html: `
+                            <div class="text-center">
+                                <div class="mb-4">
+                                    <svg class="w-16 h-16 text-green-500 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                    </svg>
+                                </div>
+                                <h3 class="text-xl font-semibold mb-2">Umekamilisha kikamilifu Kuwasilisha Dodoso</h3>
+                                <p class="text-gray-600">Jibu lako litatusaidia kuboresha Duko la Kisima la Feedtan na kutoa huduma bora zaidi.</p>
+                            </div>
+                        `,
+                        confirmButtonColor: '#10b981',
+                        confirmButtonText: 'Sawa',
+                        allowOutsideClick: false
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            // Reset form after success
+                            this.reset();
+                            // Clear draft data
+                            localStorage.removeItem('feedtanSurveyDraft');
+                            // Scroll to top
+                            window.scrollTo({ top: 0, behavior: 'smooth' });
+                        }
+                    });
+                } else {
+                    throw new Error(data.message || 'Kuna tatizo limetokea');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Kuna Tatizo!',
+                    text: 'Tumeshindwa kutuma dodoso lako. Tafadhali jaribu tena.',
+                    confirmButtonColor: '#ef4444'
+                });
+            });
         });
 
         // Auto-save functionality (optional)
