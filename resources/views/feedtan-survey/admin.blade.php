@@ -361,6 +361,7 @@
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Usafirishaji</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Bidhaa</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tarehe</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Vitendo</th>
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
@@ -413,6 +414,12 @@
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                         {{ $survey->created_at->format('M d, Y') }}
                                     </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                        <a href="{{ route('dodoso.survey.show', $survey->id) }}" 
+                                           class="text-blue-600 hover:text-blue-800 text-xs font-medium">
+                                            View More
+                                        </a>
+                                    </td>
                                 </tr>
                             @empty
                                 <tr>
@@ -438,8 +445,13 @@
                                 <span class="font-medium">{{ $surveys->lastItem() ?? 0 }}</span> ya 
                                 <span class="font-medium">{{ $surveys->total() }}</span> matokeo
                             </div>
-                            <div>
-                                {{ $surveys->links() }}
+                            <div class="flex items-center space-x-4">
+                                <div class="text-sm text-gray-600">
+                                    Kila ukurasa: {{ request()->get('per_page', 50) }} majibu
+                                </div>
+                                <div>
+                                    {{ $surveys->appends(request()->query())->links() }}
+                                </div>
                             </div>
                         </div>
                     </div>

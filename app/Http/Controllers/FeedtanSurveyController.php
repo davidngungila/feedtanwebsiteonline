@@ -80,9 +80,10 @@ class FeedtanSurveyController extends Controller
         return view('feedtan-survey.thankyou');
     }
 
-    public function admin()
+    public function admin(Request $request)
     {
-        $surveys = FeedtanSurvey::latest()->paginate(50);
+        $perPage = $request->get('per_page', 50);
+        $surveys = FeedtanSurvey::latest()->paginate($perPage);
         
         // Calculate statistics
         $stats = [
