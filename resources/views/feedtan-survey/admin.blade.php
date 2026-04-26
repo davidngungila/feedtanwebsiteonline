@@ -347,7 +347,7 @@
             <!-- Recent Responses Table -->
             <div class="glass-effect rounded-xl overflow-hidden">
                 <div class="px-6 py-4 border-b border-gray-200">
-                    <h3 class="font-manrope text-lg font-semibold text-gray-900">Majibu ya Uchunguzi ya Hivi Karibuni</h3>
+                    <h3 class="font-manrope text-lg font-semibold text-gray-900">Majibu ya Uchunguzi wa Hivi Karibuni</h3>
                     <p class="text-sm text-gray-500 mt-1">Inaonyesha majibu {{ $surveys->count() }} ya hivi karibuni</p>
                 </div>
                 <div class="overflow-x-auto">
@@ -376,6 +376,9 @@
                                         {{ $survey->customer_phone ?? 'Haijapatikana' }}
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                        {{ $survey->customer_email ?? 'Haijapatikana' }}
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                         {{ $survey->customer_location ?? 'Haijapatikana' }}
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
@@ -386,6 +389,26 @@
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                         {{ count($survey->frequently_purchased_products ?? []) }}
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 max-w-xs">
+                                        @php
+                                            $tableData = $survey->survey_table_data_formatted ?? [];
+                                            $tableDataText = [];
+                                            foreach($tableData as $item) {
+                                                if (!empty($item['product'])) {
+                                                    $tableDataText[] = $item['product'] . ' (' . $item['frequency_per_week'] . ', ' . $item['quantity_per_purchase'] . ')';
+                                                }
+                                            }
+                                            echo implode('<br>', $tableDataText);
+                                        @endphp
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 max-w-xs">
+                                        @php
+                                            $hardToFind = $survey->hard_to_find_product ?? '';
+                                            $productsToSell = $survey->products_to_sell ?? '';
+                                            $additionalSuggestions = $survey->additional_suggestions ?? '';
+                                            echo trim($hardToFind . ' ' . $productsToSell . ' ' . $additionalSuggestions);
+                                        @endphp
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                         {{ $survey->created_at->format('M d, Y') }}
