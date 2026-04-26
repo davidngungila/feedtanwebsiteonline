@@ -116,7 +116,7 @@
                     </h2>
                     <div class="max-w-3xl mx-auto">
                         <p class="font-lato text-lg text-gray-600">
-                            Feedtan inapanga kuanzisha duka la kisima (Feedtan Mini Supermarket) litakalowawezesha wanachama kupata bidhaa bora kwa bei nafuu, kuagiza wakiwa mahali popote (huduma ya usafirishaji), na pia kutoa fursa kwa wanachama kuuza bidhaa zao kupitia duka hili.
+                            Feedtan inapanga kuanzisha duka la Kisasa (Feedtan Mini Supermarket) litakalowawezesha wanachama kupata bidhaa bora kwa bei nafuu, kuagiza wakiwa mahali popote (huduma ya usafirishaji), na pia kutoa fursa kwa wanachama kuuza bidhaa zao kupitia duka hili.
                         </p>
                         <p class="font-lato text-lg text-gray-600">
                             Lengo letu ni kuboresha upatikanaji wa bidhaa muhimu, kupunguza gharama, na kuongeza fursa za kipato kwa wanachama wote.
