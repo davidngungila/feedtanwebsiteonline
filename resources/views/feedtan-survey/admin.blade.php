@@ -374,21 +374,30 @@
                                         {{ $survey->customer_name ?? 'Hujajitambulisha' }}
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                        {{ $survey->customer_phone ?? 'Haijapatikana' }}
+                                        {{ $survey->customer_phone ?? 'Hajatoa nambari ya simu' }}
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                        {{ $survey->customer_email ?? 'Haijapatikana' }}
+                                        {{ $survey->customer_location ?? 'Hajatoa eneo lake' }}
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                        {{ $survey->customer_location ?? 'Haijapatikana' }}
+                                        {{ $survey->delivery_service ?? 'Hajatoa jibu' }}
                                     </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
-                                            @if($survey->wants_delivery_service) bg-green-100 text-green-800 @else bg-red-100 text-red-800 @endif">
-                                            {{ $survey->wants_delivery_service_label }}
-                                        </span>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 max-w-xs">
+                                        {{ count($survey->frequently_purchased_products ?? []) }}
                                     </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 max-w-xs">
+                                        {{ count($survey->frequently_purchased_products ?? []) }}
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 max-w-xs">
+                                        {{ count($survey->frequently_purchased_products ?? []) }}
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 max-w-xs">
+                                        {{ count($survey->frequently_purchased_products ?? []) }}
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 max-w-xs">
+                                        {{ count($survey->frequently_purchased_products ?? []) }}
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 max-w-xs">
                                         {{ count($survey->frequently_purchased_products ?? []) }}
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 max-w-xs">
@@ -404,14 +413,6 @@
                                         @endphp
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 max-w-xs">
-                                        @php
-                                            $hardToFind = $survey->hard_to_find_product ?? '';
-                                            $productsToSell = $survey->products_to_sell ?? '';
-                                            $additionalSuggestions = $survey->additional_suggestions ?? '';
-                                            echo trim($hardToFind . ' ' . $productsToSell . ' ' . $additionalSuggestions);
-                                        @endphp
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                         {{ $survey->created_at->format('M d, Y') }}
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
