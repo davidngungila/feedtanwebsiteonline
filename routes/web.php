@@ -75,6 +75,7 @@ Route::prefix('dodoso')->name('dodoso.')->group(function () {
     
     // Survey admin routes
     Route::get('/admin', [FeedtanSurveyController::class, 'admin'])->name('survey.admin');
+    Route::get('/admin/{id}', [FeedtanSurveyController::class, 'show'])->name('survey.show');
     Route::get('/export', [FeedtanSurveyController::class, 'export'])->name('survey.export');
     
     // Payment routes (sub-routes)

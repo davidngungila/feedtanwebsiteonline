@@ -106,6 +106,12 @@ class FeedtanSurveyController extends Controller
         return view('feedtan-survey.admin', compact('surveys', 'stats'));
     }
 
+    public function show($id)
+    {
+        $survey = FeedtanSurvey::findOrFail($id);
+        return view('feedtan-survey.show', compact('survey'));
+    }
+
     public function export()
     {
         $surveys = FeedtanSurvey::latest()->get();
