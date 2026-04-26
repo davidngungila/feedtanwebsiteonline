@@ -699,7 +699,7 @@
                                     </svg>
                                 </div>
                                 <h3 class="text-xl font-semibold mb-2">Umekamilisha kikamilifu Kuwasilisha Dodoso</h3>
-                                <p class="text-gray-600">Jibu lako litatusaidia kuboresha Duko la Kisima la Feedtan na kutoa huduma bora zaidi.</p>
+                                <p class="text-gray-600">Jibu lako litatusaidia kuboresha Duka la Kisasa la Feedtan na kutoa huduma bora zaidi.</p>
                             </div>
                         `,
                         confirmButtonColor: '#10b981',
