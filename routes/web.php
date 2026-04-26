@@ -79,7 +79,6 @@ Route::prefix('dodoso')->name('dodoso.')->group(function () {
     
     // Payment routes (sub-routes)
     Route::get('/payment', [FiaPaymentController::class, 'publicForm'])->name('payment.form');
-    Route::get('/', [FiaPaymentController::class, 'publicForm'])->name('dodoso.public.form');
     Route::get('/payment/verify', [FiaPaymentController::class, 'memberVerify'])->name('payment.member.verify');
     Route::post('/payment/verify', [FiaPaymentController::class, 'memberVerifyProcess'])->name('payment.member.verify.process');
     Route::post('/payment/submit', [FiaPaymentController::class, 'submitPayment'])->name('payment.submit');

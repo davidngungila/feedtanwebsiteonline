@@ -311,7 +311,7 @@
                         <li><a href="{{ url('/') }}" class="hover:text-white transition-colors">Home</a></li>
                         <li><a href="{{ url('/products') }}" class="hover:text-white transition-colors">Products</a></li>
                         <li><a href="{{ url('/pricing') }}" class="hover:text-white transition-colors">Pricing</a></li>
-                        <li><a href="{{ route('dodoso.public.form') }}" class="hover:text-white transition-colors">Dodoso</a></li>
+                        <li><a href="{{ route('dodoso.survey.index') }}" class="hover:text-white transition-colors">Dodoso</a></li>
                         <li><a href="{{ url('/about') }}" class="hover:text-white transition-colors">About Us</a></li>
                         <li><a href="{{ url('/contact') }}" class="hover:text-white transition-colors">Contact</a></li>
                     </ul>

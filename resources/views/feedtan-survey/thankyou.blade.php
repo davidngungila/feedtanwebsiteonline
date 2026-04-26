@@ -146,56 +146,13 @@
                         </div>
                         @endif
 
-                        <!-- What's Next -->
-                        <div class="text-left">
-                            <h3 class="font-manrope text-lg font-semibold text-gray-900 mb-4 text-center">
-                                Inakuaje baadaye?
-                            </h3>
-                            <div class="space-y-4">
-                                <div class="flex items-start space-x-3">
-                                    <div class="w-6 h-6 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
-                                        <svg class="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                                        </svg>
-                                    </div>
-                                    <div>
-                                        <p class="font-medium text-gray-900">Data yako itachambuliwa</p>
-                                        <p class="text-sm text-gray-600">Tutachambua majibu yako pamoja na majibu ya wateja wengine</p>
-                                    </div>
-                                </div>
-                                
-                                <div class="flex items-start space-x-3">
-                                    <div class="w-6 h-6 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
-                                        <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
-                                        </svg>
-                                    </div>
-                                    <div>
-                                        <p class="font-medium text-gray-900">Tutaboresha huduma</p>
-                                        <p class="text-sm text-gray-600">Tutatumia matokeo kuboresha bidhaa na huduma zetu</p>
-                                    </div>
-                                </div>
-                                
-                                <div class="flex items-start space-x-3">
-                                    <div class="w-6 h-6 bg-purple-100 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
-                                        <svg class="w-4 h-4 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
-                                        </svg>
-                                    </div>
-                                    <div>
-                                        <p class="font-medium text-gray-900">Utajibiwa haraka</p>
-                                        <p class="text-sm text-gray-600">Tutakupatia majibu ya haraka kuhusu mabadiliko</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                        
                 </div>
 
                 <!-- Feedtan Mini Supermarket Benefits -->
                 <div class="glass-effect rounded-xl p-8 mb-8">
                     <h3 class="font-manrope text-2xl font-bold gradient-text mb-6 text-center">
-                        Duko la Kisima la Feedtan Litakuletea:
+                        Duka la Kisasa la Feedtan Litakuletea:
                     </h3>
                     
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -241,13 +198,7 @@
                         <span>Rudi Nyumbani</span>
                     </a>
                     
-                    <a href="{{ route('dodoso.survey.create') }}" 
-                       class="px-8 py-4 border border-gray-300 text-gray-700 rounded-xl font-medium hover:bg-gray-50 transition duration-200 flex items-center justify-center space-x-3">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
-                        </svg>
-                        <span>Jaza Uchunguzi Mwingine</span>
-                    </a>
+                    
                 </div>
 
                 <!-- Contact Information -->
@@ -257,20 +208,20 @@
                             Kwa mawasiliano zaidi
                         </h3>
                         <p class="font-lato text-gray-600 mb-4">
-                            Ikiwa una maswali yoyote kuhusu Duko la Kisima la Feedtan, tafadhali wasiliana nasi
+                            Ikiwa una maswali yoyote kuhusu Duka la Kisasa la Feedtan, tafadhali wasiliana nasi
                         </p>
                         <div class="flex flex-col sm:flex-row justify-center items-center space-y-2 sm:space-y-0 sm:space-x-6">
                             <div class="flex items-center space-x-2">
                                 <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
                                 </svg>
-                                <span class="text-sm font-medium">info@feedtan.com</span>
+                                <span class="text-sm font-medium">feedtan15@gmail.com</span>
                             </div>
                             <div class="flex items-center space-x-2">
                                 <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
                                 </svg>
-                                <span class="text-sm font-medium">+255 000 000 000</span>
+                                <span class="text-sm font-medium">+255717358865</span>
                             </div>
                         </div>
                     </div>
