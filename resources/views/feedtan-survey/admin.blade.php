@@ -374,30 +374,12 @@
                                         {{ $survey->customer_name ?? 'Hujajitambulisha' }}
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                        {{ $survey->customer_phone ?? 'Hajatoa nambari ya simu' }}
+                                        {{ $survey->phone_number ?? 'Hajatoa nambari ya simu' }}
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                        {{ $survey->customer_location ?? 'Hajatoa eneo lake' }}
+                                        {{ $survey->location ?? 'Hajatoa eneo lake' }}
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                        {{ $survey->delivery_service ?? 'Hajatoa jibu' }}
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 max-w-xs">
-                                        {{ count($survey->frequently_purchased_products ?? []) }}
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 max-w-xs">
-                                        {{ count($survey->frequently_purchased_products ?? []) }}
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 max-w-xs">
-                                        {{ count($survey->frequently_purchased_products ?? []) }}
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 max-w-xs">
-                                        {{ count($survey->frequently_purchased_products ?? []) }}
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 max-w-xs">
-                                        {{ count($survey->frequently_purchased_products ?? []) }}
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 max-w-xs">
                                         {{ count($survey->frequently_purchased_products ?? []) }}
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 max-w-xs">
@@ -412,7 +394,7 @@
                                             echo implode('<br>', $tableDataText);
                                         @endphp
                                     </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 max-w-xs">
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                         {{ $survey->created_at->format('M d, Y') }}
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
