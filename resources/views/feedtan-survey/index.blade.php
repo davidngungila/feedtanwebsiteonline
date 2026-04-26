@@ -261,7 +261,7 @@
                             Kwa mawasiliano zaidi
                         </h3>
                         <p class="font-lato text-gray-600 mb-4">
-                            Ikiwa una maswali yoyote kuhusu Duka la Kisima la Feedtan, tafadhali wasiliana nasi
+                            Ikiwa una maswali yoyote kuhusu Duka la Kisasa la Feedtan, tafadhali wasiliana nasi
                         </p>
                         <div class="flex flex-col sm:flex-row justify-center items-center space-y-2 sm:space-y-0 sm:space-x-6">
                             <div class="flex items-center space-x-2">
