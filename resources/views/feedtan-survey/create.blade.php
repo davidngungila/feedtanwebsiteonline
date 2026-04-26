@@ -526,13 +526,22 @@
         let productRowCount = 5; // Start with 5 existing rows
         
         function addProductRow() {
+            console.log('addProductRow called');
             const tableBody = document.getElementById('surveyTableBody');
+            console.log('Table body found:', tableBody);
+            
+            if (!tableBody) {
+                console.error('Table body not found!');
+                return;
+            }
+            
             const newRow = document.createElement('tr');
             newRow.className = 'survey-table-row';
             newRow.setAttribute('data-row-index', productRowCount + 1);
             
             const rowIndex = productRowCount;
             const rowNumber = productRowCount + 1;
+            console.log('Adding row with index:', rowIndex, 'and number:', rowNumber);
             
             newRow.innerHTML = `
                 <td class="border border-gray-300 px-4 py-3 text-center">${rowNumber}</td>
@@ -572,14 +581,25 @@
         }
         
         function removeProductRow(index) {
+            console.log('removeProductRow called with index:', index);
             const rows = document.querySelectorAll('.survey-table-row');
+            console.log('Found rows:', rows.length);
+            
             if (rows.length > 1) { // Keep at least one row
                 const rowToRemove = document.querySelector(`[data-row-index="${index + 1}"]`);
+                console.log('Looking for row with data-row-index:', index + 1);
+                console.log('Row to remove found:', rowToRemove);
+                
                 if (rowToRemove) {
                     rowToRemove.remove();
                     updateRowNumbers();
+                    productRowCount--; // Decrease the count when removing a row
+                    console.log('Row removed successfully');
+                } else {
+                    console.error('Row not found with data-row-index:', index + 1);
                 }
             } else {
+                console.log('Cannot remove last row');
                 Swal.fire({
                     icon: 'warning',
                     title: 'Hairuhusi',
