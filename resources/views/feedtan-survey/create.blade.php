@@ -522,6 +522,84 @@
     </div>
 
     <script>
+        // Product row management
+        let productRowCount = 5; // Start with 5 existing rows
+        
+        function addProductRow() {
+            const tableBody = document.getElementById('surveyTableBody');
+            const newRow = document.createElement('tr');
+            newRow.className = 'survey-table-row';
+            newRow.setAttribute('data-row-index', productRowCount + 1);
+            
+            const rowIndex = productRowCount;
+            const rowNumber = productRowCount + 1;
+            
+            newRow.innerHTML = `
+                <td class="border border-gray-300 px-4 py-3 text-center">${rowNumber}</td>
+                <td class="border border-gray-300 px-4 py-3">
+                    <input type="text" name="survey_table_data[${rowIndex}][product]" 
+                           class="w-full px-3 py-2 border border-gray-200 rounded focus:border-green-500 focus:outline-none"
+                           placeholder="Andika bidhaa">
+                </td>
+                <td class="border border-gray-300 px-4 py-3">
+                    <input type="text" name="survey_table_data[${rowIndex}][frequency_per_week]" 
+                           class="w-full px-3 py-2 border border-gray-200 rounded focus:border-green-500 focus:outline-none"
+                           placeholder="mf: 2-3">
+                </td>
+                <td class="border border-gray-300 px-4 py-3">
+                    <input type="text" name="survey_table_data[${rowIndex}][quantity_per_purchase]" 
+                           class="w-full px-3 py-2 border border-gray-200 rounded focus:border-green-500 focus:outline-none"
+                           placeholder="mf: 1 kg, 2 viti">
+                </td>
+                <td class="border border-gray-300 px-4 py-3">
+                    <input type="text" name="survey_table_data[${rowIndex}][suggestions]" 
+                           class="w-full px-3 py-2 border border-gray-200 rounded focus:border-green-500 focus:outline-none"
+                           placeholder="Mapendekezo yako">
+                </td>
+                <td class="border border-gray-300 px-4 py-3 text-center">
+                    <button type="button" onclick="removeProductRow(${rowIndex})" 
+                            class="text-red-500 hover:text-red-700 text-sm font-medium">
+                        Ondoa
+                    </button>
+                </td>
+            `;
+            
+            tableBody.appendChild(newRow);
+            productRowCount++;
+            
+            // Update row numbers
+            updateRowNumbers();
+        }
+        
+        function removeProductRow(index) {
+            const rows = document.querySelectorAll('.survey-table-row');
+            if (rows.length > 1) { // Keep at least one row
+                const rowToRemove = document.querySelector(`[data-row-index="${index + 1}"]`);
+                if (rowToRemove) {
+                    rowToRemove.remove();
+                    updateRowNumbers();
+                }
+            } else {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Hairuhusi',
+                    text: 'Lazima uwe na angalau mstari mmoja wa bidhaa.',
+                    confirmButtonColor: '#10b981'
+                });
+            }
+        }
+        
+        function updateRowNumbers() {
+            const rows = document.querySelectorAll('.survey-table-row');
+            rows.forEach((row, index) => {
+                const firstCell = row.querySelector('td:first-child');
+                if (firstCell) {
+                    firstCell.textContent = index + 1;
+                }
+                row.setAttribute('data-row-index', index + 1);
+            });
+        }
+
         // Form validation
         document.querySelector('form').addEventListener('submit', function(e) {
             // Check if at least one frequently purchased product is selected
@@ -593,7 +671,6 @@
         });
         
         // Auto-save functionality
-        let autoSaveTimer;
         const inputs = document.querySelectorAll('input, textarea, select');
         
         inputs.forEach(input => {
@@ -622,9 +699,10 @@
                 } else {
                     data[key] = value;
                 }
-                });
             }
-        });
+            localStorage.setItem('feedtanSurveyDraft', JSON.stringify(data));
+            console.log('Form auto-saved');
+        }
     </script>
 </body>
 </html>

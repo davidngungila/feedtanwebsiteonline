@@ -112,7 +112,7 @@
                         Shukrani Sana! 🙏
                     </h1>
                     <p class="font-lato text-xl text-gray-600 mb-8">
-                        Umekamilisha kikamilifu uchunguzi wa Duko la Kisima la Feedtan
+                        Umekamilisha kikamilifu Kuwasilisha Dodoso la Duka la Kisasa la Feedtan
                     </p>
                 </div>
 
@@ -127,7 +127,7 @@
                                 Jibu lako limehifadhiwa kikamilifu
                             </h2>
                             <p class="font-lato text-gray-600">
-                                Jibu lako litatusaidia kuboresha Duko la Kisima la Feedtan na kutoa huduma bora zaidi
+                                Jibu lako litatusaidia kuboresha Duka la Kisasa la Feedtan na kutoa huduma bora zaidi
                             </p>
                         </div>
 
