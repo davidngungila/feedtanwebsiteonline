@@ -672,12 +672,20 @@
                 method: 'POST',
                 body: formData,
                 headers: {
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
                     'Accept': 'application/json'
                 }
             })
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
             .then(data => {
+                // Close loading popup first
+                Swal.close();
+                
                 if (data.success) {
                     // Show success popup
                     Swal.fire({
@@ -713,6 +721,9 @@
             })
             .catch(error => {
                 console.error('Error:', error);
+                // Close loading popup first
+                Swal.close();
+                
                 Swal.fire({
                     icon: 'error',
                     title: 'Kuna Tatizo!',

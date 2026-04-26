@@ -109,7 +109,7 @@
                         </svg>
                     </div>
                     <h1 class="font-manrope text-4xl sm:text-5xl font-bold gradient-text mb-4">
-                        Shukrani Sana! 🙏
+                        Shukrani Sana!
                     </h1>
                     <p class="font-lato text-xl text-gray-600 mb-8">
                         Umekamilisha kikamilifu Kuwasilisha Dodoso la Duka la Kisasa la Feedtan
