@@ -143,7 +143,9 @@ class FeedtanSurveyController extends Controller
             ],
             'customer_demographics' => [
                 'identified_customers' => $surveys->whereNotNull('customer_name')->where('customer_name', '!=', '')->count(),
-                'unidentified_customers' => $surveys->whereNull('customer_name')->orWhere('customer_name', '')->count(),
+                'unidentified_customers' => $surveys->filter(function($survey) {
+                    return is_null($survey->customer_name) || $survey->customer_name === '';
+                })->count(),
                 'customers_with_phone' => $surveys->whereNotNull('customer_phone')->where('customer_phone', '!=', '')->count(),
                 'customers_with_email' => $surveys->whereNotNull('customer_email')->where('customer_email', '!=', '')->count(),
                 'customers_with_location' => $surveys->whereNotNull('customer_location')->where('customer_location', '!=', '')->count(),
