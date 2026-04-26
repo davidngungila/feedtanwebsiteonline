@@ -8,8 +8,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <style>
+        <style>
         body {
             font-family: 'Lato', sans-serif;
             background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 50%, #bbf7d0 100%);
@@ -174,18 +173,130 @@
                 </div>
             </div>
 
-            <!-- Charts Section -->
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-                <!-- Delivery Service Chart -->
-                <div class="glass-effect rounded-xl p-6">
-                    <h3 class="font-manrope text-lg font-semibold text-gray-900 mb-4">Mahitaji ya Huduma ya Usafirishaji</h3>
-                    <canvas id="deliveryChart" width="400" height="300"></canvas>
-                </div>
-
-                <!-- Product Demand Chart -->
-                <div class="glass-effect rounded-xl p-6">
-                    <h3 class="font-manrope text-lg font-semibold text-gray-900 mb-4">Mahitaji ya Bidhaa kwa Kategoria</h3>
-                    <canvas id="productChart" width="400" height="300"></canvas>
+            <!-- Enhanced Analysis Section -->
+            <div class="glass-effect rounded-xl p-6 mb-8">
+                <h3 class="font-manrope text-lg font-semibold text-gray-900 mb-6">Uchambuzaji wa Data</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Response Rate Analysis -->
+                    <div class="bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg p-4">
+                        <h4 class="font-semibold text-blue-900 mb-3">Viwango vya Majibu</h4>
+                        <div class="space-y-2">
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-gray-600">Wastani:</span>
+                                <span class="font-bold text-blue-600">{{ now()->format('Y-m-d') }}</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-gray-600">Jumla ya Majibu:</span>
+                                <span class="font-bold text-blue-600">{{ number_format($stats['total_responses']) }}</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-gray-600">Wastani wa Kwanza:</span>
+                                <span class="font-bold text-blue-600">{{ now()->subDays(7)->format('Y-m-d') }}</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Delivery Service Insights -->
+                    <div class="bg-gradient-to-br from-green-50 to-green-100 rounded-lg p-4">
+                        <h4 class="font-semibold text-green-900 mb-3">Uchambuzi wa Usafirishaji</h4>
+                        <div class="space-y-3">
+                            <div class="flex items-center justify-between">
+                                <span class="text-sm text-gray-600">Wanataka:</span>
+                                <span class="font-bold text-green-600">{{ $stats['delivery_service_demand']['yes'] }}</span>
+                                <span class="text-sm text-gray-600">({{ $stats['total_responses'] > 0 ? round(($stats['delivery_service_demand']['yes'] / $stats['total_responses']) * 100, 1) : 0 }}%)</span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-sm text-gray-600">Hawataki:</span>
+                                <span class="font-bold text-red-600">{{ $stats['delivery_service_demand']['no'] }}</span>
+                                <span class="text-sm text-gray-600">({{ $stats['total_responses'] > 0 ? round(($stats['delivery_service_demand']['no'] / $stats['total_responses']) * 100, 1) : 0 }}%)</span>
+                            </div>
+                            <div class="mt-3 p-3 bg-white rounded-lg">
+                                <p class="text-xs text-gray-500">
+                                    <strong>Uchambuzi:</strong> @if($stats['delivery_service_demand']['yes'] > $stats['delivery_service_demand']['no']) 
+                                        <span class="text-green-600">Wengi wanataka huduma ya usafirishaji</span>
+                                    @else 
+                                        <span class="text-red-600">Wengi hawataki huduma ya usafirishaji</span>
+                                    @endif
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Product Category Analysis -->
+                    <div class="bg-gradient-to-br from-purple-50 to-purple-100 rounded-lg p-4">
+                        <h4 class="font-semibold text-purple-900 mb-3">Uchambuzi wa Bidhaa</h4>
+                        <div class="space-y-3">
+                            @php
+                                $totalProductDemand = array_sum($stats['product_demand']);
+                                $sortedProducts = $stats['product_demand'];
+                                arsort($sortedProducts);
+                            @endphp
+                            <div class="text-sm text-gray-600 mb-2">
+                                <strong>Jumla ya Mahitaji:</strong> {{ number_format($totalProductDemand) }} mahitaji
+                            </div>
+                            <div class="space-y-2">
+                                @foreach($sortedProducts as $category => $count)
+                                    @if($count > 0)
+                                        <div class="flex items-center justify-between p-2 bg-white rounded">
+                                            <span class="text-xs">{{ [
+                                                'vyakula' => 'Vyakula',
+                                                'vinywaji' => 'Vinywaji', 
+                                                'bidhaa_za_usafi' => 'Bidhaa za Usafi',
+                                                'bidhaa_za_watoto' => 'Bidhaa za Watoto',
+                                                'snacks' => 'Snacks',
+                                                'skincare_products' => 'Skincare'
+                                            ][$category] ?? $category }}</span>
+                                            <div class="flex items-center space-x-2">
+                                                <div class="text-xs text-gray-500">{{ $count }} mahitaji</div>
+                                                <div class="w-20 bg-gray-200 rounded-full h-2">
+                                                    <div class="bg-purple-600 h-2 rounded-full" style="width: {{ $totalProductDemand > 0 ? ($count / $totalProductDemand) * 100 : 0 }}%"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endif
+                                @endforeach
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Market Insights -->
+                    <div class="bg-gradient-to-br from-orange-50 to-orange-100 rounded-lg p-4">
+                        <h4 class="font-semibold text-orange-900 mb-3">Fursa za Soko</h4>
+                        <div class="space-y-3">
+                            <div class="p-3 bg-white rounded-lg">
+                                <p class="text-sm font-medium text-gray-900 mb-2">Bidhaa Zinazohitajika Sana</p>
+                                <div class="space-y-1">
+                                    @php
+                                        $hardToFindCounts = array_count_values($stats['hard_to_find_products']);
+                                        arsort($hardToFindCounts);
+                                        $topHardToFind = array_slice($hardToFindCounts, 0, 3, true);
+                                    @endphp
+                                    @foreach($topHardToFind as $product => $count)
+                                        <div class="flex items-center justify-between text-xs">
+                                            <span class="text-gray-600">{{ $product }}</span>
+                                            <span class="font-bold text-orange-600">{{ $count }} mara</span>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            </div>
+                            <div class="p-3 bg-white rounded-lg">
+                                <p class="text-sm font-medium text-gray-900 mb-2">Bidhaa Wateja Wanauza</p>
+                                <div class="space-y-1">
+                                    @php
+                                        $productsToSellCounts = array_count_values($stats['products_to_sell']);
+                                        arsort($productsToSellCounts);
+                                        $topProductsToSell = array_slice($productsToSellCounts, 0, 3, true);
+                                    @endphp
+                                    @foreach($topProductsToSell as $product => $count)
+                                        <div class="flex items-center justify-between text-xs">
+                                            <span class="text-gray-600">{{ $product }}</span>
+                                            <span class="font-bold text-orange-600">{{ $count }} mara</span>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -314,98 +425,5 @@
         </div>
     </div>
 
-    <script>
-        // Delivery Service Chart
-        const deliveryCtx = document.getElementById('deliveryChart').getContext('2d');
-        const deliveryData = [{{ $stats['delivery_service_demand']['yes'] ?? 0 }}, {{ $stats['delivery_service_demand']['no'] ?? 0 }}];
-        const totalDelivery = deliveryData.reduce((a, b) => a + b, 0);
-        
-        new Chart(deliveryCtx, {
-            type: 'pie',
-            data: {
-                labels: ['Wanataka Usafirishaji', 'Hawataki Usafirishaji'],
-                datasets: [{
-                    data: totalDelivery > 0 ? deliveryData : [1, 0],
-                    backgroundColor: ['#10B981', '#EF4444'],
-                    borderWidth: 2,
-                    borderColor: '#fff'
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        position: 'bottom'
-                    },
-                    tooltip: {
-                        callbacks: {
-                            label: function(context) {
-                                const label = context.label || '';
-                                const value = totalDelivery > 0 ? context.raw : 0;
-                                const total = totalDelivery > 0 ? totalDelivery : 1;
-                                const percentage = ((value / total) * 100).toFixed(1);
-                                return `${label}: ${value} (${percentage}%)`;
-                            }
-                        }
-                    }
-                }
-            }
-        });
-
-        // Product Demand Chart
-        const productCtx = document.getElementById('productChart').getContext('2d');
-        const productData = [
-            {{ $stats['product_demand']['vyakula'] ?? 0 }},
-            {{ $stats['product_demand']['vinywaji'] ?? 0 }},
-            {{ $stats['product_demand']['bidhaa_za_usafi'] ?? 0 }},
-            {{ $stats['product_demand']['bidhaa_za_watoto'] ?? 0 }},
-            {{ $stats['product_demand']['snacks'] ?? 0 }},
-            {{ $stats['product_demand']['skincare_products'] ?? 0 }}
-        ];
-        
-        // Ensure no invalid values (NaN, Infinity, etc.)
-        const cleanProductData = productData.map(val => isFinite(val) && val >= 0 ? val : 0);
-        const maxProductValue = Math.max(...cleanProductData, 1);
-        
-        new Chart(productCtx, {
-            type: 'bar',
-            data: {
-                labels: ['Vyakula', 'Vinywaji', 'Bidhaa za Usafi', 'Bidhaa za Watoto', 'Snacks', 'Skincare'],
-                datasets: [{
-                    label: 'Mahitaji ya Bidhaa',
-                    data: cleanProductData,
-                    backgroundColor: ['#3B82F6', '#10B981', '#F59E0B', '#8B5CF6', '#EF4444', '#EC4899'],
-                    borderColor: ['#2563EB', '#059669', '#D97706', '#6D28D9', '#DC2626', '#DB2777'],
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        max: Math.ceil(maxProductValue * 1.1), // Add 10% padding
-                        ticks: {
-                            stepSize: 1,
-                            precision: 0
-                        }
-                    }
-                },
-                plugins: {
-                    tooltip: {
-                        callbacks: {
-                            label: function(context) {
-                                const label = context.dataset.label || '';
-                                const value = context.parsed.y;
-                                return `${label}: ${value}`;
-                            }
-                        }
-                    }
-                }
-            }
-        });
-    </script>
-</body>
+    </body>
 </html>
